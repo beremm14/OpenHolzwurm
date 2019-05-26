@@ -1,10 +1,14 @@
 package data;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 /**
  *
  * @author emil
  */
-public class Material {
+public class Material implements JsonObjAble {
     
     private final Preset preset;
     private final double value;
@@ -20,6 +24,14 @@ public class Material {
 
     public double getValue() {
         return value;
+    }
+
+    @Override
+    public JsonObject toJsonObject() {
+        JsonObjectBuilder b = Json.createObjectBuilder();
+        b.add("Preset", preset.toJsonObject());
+        b.add("Value", value);
+        return b.build();
     }
 
 }

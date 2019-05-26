@@ -1,8 +1,8 @@
 package data;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -11,6 +11,6 @@ import java.io.IOException;
 public interface JsonExport {
     
     public void writeTo(BufferedWriter w) throws IOException;
-    public void loadInto(BufferedReader r) throws IOException;
+    public void loadInto(InputStream fis) throws IOException;
     
 }
