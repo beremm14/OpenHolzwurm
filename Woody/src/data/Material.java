@@ -8,7 +8,7 @@ import javax.json.JsonObjectBuilder;
  *
  * @author emil
  */
-public class Material implements JsonObjAble {
+public class Material implements Comparable<Material>, JsonObjAble {
     
     private final Preset preset;
     private final double value;
@@ -32,6 +32,11 @@ public class Material implements JsonObjAble {
         b.add("Preset", preset.toJsonObject());
         b.add("Value", value);
         return b.build();
+    }
+
+    @Override
+    public int compareTo(Material o) {
+        return this.getPreset().getName().compareTo(o.getPreset().getName());
     }
 
 }

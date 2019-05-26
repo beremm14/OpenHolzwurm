@@ -57,9 +57,15 @@ public class Presets implements JsonExport {
     public Preset remove(int index) {
         return presets.remove(index);
     }
+    
+    public List<Preset> getPresets() {
+        return presets;
+    }
 
     @Override
     public void writeTo(BufferedWriter w) throws IOException {
+        Collections.sort(presets);
+        
         JsonArrayBuilder ab = Json.createArrayBuilder();
         for (Preset p : presets) {
             ab.add(p.toJsonObject());
@@ -88,14 +94,7 @@ public class Presets implements JsonExport {
             
             String name = jobj.getString("Name");
             double price = jobj.getJsonNumber("Price").doubleValue();
-            Type type;
-            switch (jobj.getString("Type")) {
-                case "Area": type = new TypeArea(); break;
-                case "Length": type = new TypeLength(); break;
-                case "Piece": type = new TypePiece(); break;
-                case "Volume": type = new TypeVolume(); break;
-                default: type = null;
-            }
+            String type = jobj.getString("Type");
             
             presets.add(new Preset(name, type, price));
         }
