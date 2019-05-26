@@ -18,21 +18,55 @@ import javax.json.JsonValue;
  *
  * @author emil
  */
-public class UsedMaterials implements JsonExport {
+public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     
-    private static UsedMaterials instance;
-    
+    private final String name;
     private final List<Material> materials = new ArrayList<>();
-    
-    public static UsedMaterials getInstance() {
-        if (instance == null) {
-            instance = new UsedMaterials();
-        }
-        return instance;
+
+    public Product(String name) {
+        this.name = name;
     }
     
-    private UsedMaterials() {}
+    public Product(JsonObject input) {
+        this.name = input.getString("Name");
+        JsonArray array = input.getJsonArray("Materials");
+        for (JsonValue value : array) {
+            JsonObject jobj = value.asJsonObject();
+            
+            JsonObject presetObj = jobj.getJsonObject("Preset");
+            
+            String presetName = presetObj.getString("Name");
+            Preset preset = null;
+            for (Preset p : Presets.getInstance().getPresets()) {
+                if (p.getName().equals(presetName)) {
+                    preset = p;
+                    break;
+                }
+            }
+            
+            double materialValue = jobj.getJsonNumber("Value").doubleValue();
+            
+            materials.add(new Material(preset, materialValue));
+        }
+        Collections.sort(materials);
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Material> getMaterials() {
+        return materials;
+    }
+
+    public double getPrice() {
+        double price = 0;
+        for (Material m : materials) {
+            price += m.getPrice();
+        }
+        return price;
+    }
+    
     public int size() {
         return materials.size();
     }
@@ -99,6 +133,28 @@ public class UsedMaterials implements JsonExport {
             materials.add(new Material(preset, materialValue));
         }
         Collections.sort(materials);
+    }
+
+    @Override
+    public JsonObject toJsonObject() {
+        Collections.sort(materials);
+        
+        JsonArrayBuilder ab = Json.createArrayBuilder();
+        
+        for (Material m : materials) {
+            ab.add(m.toJsonObject());
+        }
+        JsonArray values = ab.build();
+        
+        JsonObjectBuilder ob = Json.createObjectBuilder();
+        ob.add("Name", name);
+        ob.add("Materials", values);
+        return ob.build();
+    }
+
+    @Override
+    public int compareTo(Product o) {
+        return this.getName().compareTo(o.getName());
     }
 
 }

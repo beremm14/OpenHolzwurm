@@ -25,6 +25,10 @@ public class Material implements Comparable<Material>, JsonObjAble {
     public double getValue() {
         return value;
     }
+    
+    public double getPrice() {
+        return value * preset.getPrice();
+    }
 
     @Override
     public JsonObject toJsonObject() {
