@@ -46,11 +46,15 @@ public class Products implements JsonExport {
     }
 
     public boolean add(Product e) {
-        return products.add(e);
+        boolean rv = products.add(e);
+        Collections.sort(products);
+        return rv;
     }
 
     public boolean remove(Object o) {
-        return products.remove(o);
+        boolean rv = products.remove(o);
+        Collections.sort(products);
+        return rv;
     }
 
     public Product get(int index) {
@@ -58,11 +62,15 @@ public class Products implements JsonExport {
     }
 
     public Product set(int index, Product element) {
-        return products.set(index, element);
+        Product rv = products.set(index, element);
+        Collections.sort(products);
+        return rv;
     }
 
     public Product remove(int index) {
-        return products.remove(index);
+        Product rv = products.remove(index);
+        Collections.sort(products);
+        return rv;
     }
 
     @Override

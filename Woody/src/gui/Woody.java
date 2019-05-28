@@ -9,13 +9,19 @@ import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -250,6 +256,30 @@ public class Woody extends javax.swing.JFrame {
         } catch (IOException ex) {
         }
     }
+    
+    private FileInputStream openFile() throws FileNotFoundException, Exception {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON File", "json");
+        chooser.setFileFilter(filter);
+        
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            return new FileInputStream(chooser.getSelectedFile());
+        } else {
+            throw new Exception("User canceled");
+        }
+    }
+    
+    private BufferedWriter saveFile() throws IOException, Exception {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON File", "json");
+        chooser.setFileFilter(filter);
+        
+        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            return new BufferedWriter(new FileWriter(chooser.getSelectedFile()));
+        } else {
+            throw new Exception("User canceled");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -427,18 +457,38 @@ public class Woody extends javax.swing.JFrame {
 
         jmiOpenOne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.META_MASK));
         jmiOpenOne.setText("Produkt öffnen");
+        jmiOpenOne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiOpenOneActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiOpenOne);
 
         jmiOpenMore.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiOpenMore.setText("Katalog öffnen");
+        jmiOpenMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiOpenMoreActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiOpenMore);
 
         jmiSaveOne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.META_MASK));
         jmiSaveOne.setText("Produkt speichern");
+        jmiSaveOne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSaveOneActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiSaveOne);
 
         jmiSaveMore.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiSaveMore.setText("Katalog speichern");
+        jmiSaveMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSaveMoreActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiSaveMore);
         jMenuProduct.add(jSeparator1);
 
@@ -524,6 +574,39 @@ public class Woody extends javax.swing.JFrame {
     private void jmiRemoveProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRemoveProductActionPerformed
         removeProduct();
     }//GEN-LAST:event_jmiRemoveProductActionPerformed
+
+    private void jmiOpenOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiOpenOneActionPerformed
+        final Product product = Products.getInstance().get(jTableProducts.getSelectedRow());
+        try {
+            product.writeTo(saveFile());
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_jmiOpenOneActionPerformed
+
+    private void jmiOpenMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiOpenMoreActionPerformed
+        try {
+            Products.getInstance().loadInto(openFile());
+            refreshGui();
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_jmiOpenMoreActionPerformed
+
+    private void jmiSaveOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveOneActionPerformed
+        JsonObject jsonObj = null;
+        try (JsonReader jsonReader = Json.createReader(openFile())) {
+            jsonObj = jsonReader.readObject();
+        } catch (Exception ex) {
+        }
+        Products.getInstance().add(new Product(jsonObj));
+        refreshGui();
+    }//GEN-LAST:event_jmiSaveOneActionPerformed
+
+    private void jmiSaveMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveMoreActionPerformed
+        try {
+            Products.getInstance().writeTo(saveFile());
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_jmiSaveMoreActionPerformed
 
     /**
      * @param args the command line arguments
