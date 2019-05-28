@@ -59,4 +59,9 @@ public class Preset implements Comparable<Preset>, JsonObjAble {
         return this.getName().compareTo(o.getName());
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

@@ -20,10 +20,12 @@ import javax.json.JsonValue;
  */
 public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     
-    private final String name;
-    private final double hours;
+    private String name;
+    private double hours;
     private final List<Material> materials = new ArrayList<>();
 
+    public Product() {}
+    
     public Product(String name, double hours) {
         this.name = name;
         this.hours = hours;
@@ -88,6 +90,14 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
 
     public Material remove(int index) {
         return materials.remove(index);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setHours(double hours) {
+        this.hours = hours;
     }
 
     @Override

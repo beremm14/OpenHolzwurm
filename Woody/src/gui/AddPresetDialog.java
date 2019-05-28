@@ -1,6 +1,7 @@
 package gui;
 
 import data.Preset;
+import data.Presets;
 import data.types.TypeArea;
 import data.types.TypeLength;
 import data.types.TypePiece;
@@ -159,6 +160,12 @@ public class AddPresetDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
+        for (Preset p : Presets.getInstance().getPresets()) {
+            if (jtfName.getText().equals(p.getName())) {
+                JOptionPane.showMessageDialog(this, "Vorlagennamen müssen einzigartig sein!", "Warnung!", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
         try {
             preset = new Preset(jtfName.getText(), (data.types.Type) jcbType.getSelectedItem(), (double) jtfPrice.getValue());
             pressedOk = true;
