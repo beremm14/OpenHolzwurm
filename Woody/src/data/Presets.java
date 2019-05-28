@@ -1,10 +1,5 @@
 package data;
 
-import data.types.Type;
-import data.types.TypeArea;
-import data.types.TypeLength;
-import data.types.TypePiece;
-import data.types.TypeVolume;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,16 +60,17 @@ public class Presets implements JsonExport {
     @Override
     public void writeTo(BufferedWriter w) throws IOException {
         Collections.sort(presets);
-        
         JsonArrayBuilder ab = Json.createArrayBuilder();
         for (Preset p : presets) {
             ab.add(p.toJsonObject());
         }
         JsonArray values = ab.build();
+        System.out.println(values.toString());
         
         JsonObjectBuilder ob = Json.createObjectBuilder();
         ob.add("Presets", values);
         JsonObject json = ob.build();
+        System.out.println(json.toString());
         
         w.write(json.toString());
     }

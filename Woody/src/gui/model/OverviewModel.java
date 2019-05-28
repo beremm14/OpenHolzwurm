@@ -10,7 +10,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class OverviewModel extends AbstractTableModel {
     
-    private final String[] colNames = {"Name", "Preis"};
+    private final String[] colNames = {"Name", "Arbeitsstunden", "Preis"};
 
     @Override
     public int getRowCount() {
@@ -26,7 +26,8 @@ public class OverviewModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex) {
             case 0: return Products.getInstance().get(rowIndex).getName();
-            case 1: return String.format(Locale.GERMAN, "%.2f€", Products.getInstance().get(rowIndex).getPrice());
+            case 1: return Products.getInstance().get(rowIndex).getHours();
+            case 2: return String.format(Locale.GERMAN, "%.2f€", Products.getInstance().get(rowIndex).getPrice());
             default: throw new RuntimeException("Wrong column index");
         }
     }

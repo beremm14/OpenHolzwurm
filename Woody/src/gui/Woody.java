@@ -1,11 +1,7 @@
 package gui;
 
-import data.Material;
-import data.Preset;
 import data.Presets;
-import data.Product;
 import data.Products;
-import data.types.TypePiece;
 import gui.model.OverviewModel;
 import gui.model.PresetModel;
 import java.awt.Dimension;
@@ -42,16 +38,11 @@ public class Woody extends javax.swing.JFrame {
         jTablePresets.setModel(presetModel);
         jTableProducts.setModel(overviewModel);
 
-        Presets.getInstance().add(new Preset("Räder", new TypePiece(), 0.20));
-        presetModel.fireTableDataChanged();
-
-        Products.getInstance().add(new Product("Auto"));
-        Products.getInstance().get(0).add(new Material(Presets.getInstance().get(0), 4));
-        overviewModel.fireTableDataChanged();
-
         try {
-            savePresets();
-            saveProducts();
+            loadPresets();
+            presetModel.fireTableDataChanged();
+            loadProducts();
+            overviewModel.fireTableDataChanged();
         } catch (Exception e) {
         }
     }
@@ -79,8 +70,8 @@ public class Woody extends javax.swing.JFrame {
             presetFile = new File("Presets.json");
         }
 
-        try {
-            Presets.getInstance().writeTo(new BufferedWriter(new FileWriter(presetFile)));
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(presetFile))) {
+            Presets.getInstance().writeTo(w);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
         }
@@ -141,8 +132,8 @@ public class Woody extends javax.swing.JFrame {
             productFile = new File("Products.json");
         }
 
-        try {
-            Products.getInstance().writeTo(new BufferedWriter(new FileWriter(productFile)));
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(productFile))) {
+            Products.getInstance().writeTo(w);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
         }

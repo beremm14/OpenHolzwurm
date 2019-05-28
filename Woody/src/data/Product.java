@@ -21,14 +21,17 @@ import javax.json.JsonValue;
 public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     
     private final String name;
+    private final double hours;
     private final List<Material> materials = new ArrayList<>();
 
-    public Product(String name) {
+    public Product(String name, double hours) {
         this.name = name;
+        this.hours = hours;
     }
     
     public Product(JsonObject input) {
         this.name = input.getString("Name");
+        this.hours = input.getJsonNumber("Hours").doubleValue();
         JsonArray array = input.getJsonArray("Materials");
         for (JsonValue value : array) {
             JsonObject jobj = value.asJsonObject();
@@ -88,18 +91,8 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     }
 
     @Override
-    public void writeTo(BufferedWriter w) throws IOException {
-        Collections.sort(materials);
-        
-        JsonArrayBuilder ab = Json.createArrayBuilder();
-        for (Material m : materials) {
-            ab.add(m.toJsonObject());
-        }
-        JsonArray values = ab.build();
-        
-        JsonObjectBuilder ob = Json.createObjectBuilder();
-        ob.add("Materials", values);
-        JsonObject json = ob.build();
+    public void writeTo(BufferedWriter w) throws IOException {        
+        JsonObject json = this.toJsonObject();
         
         w.write(json.toString());
     }
@@ -148,6 +141,7 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
         
         JsonObjectBuilder ob = Json.createObjectBuilder();
         ob.add("Name", name);
+        ob.add("Hours", hours);
         ob.add("Materials", values);
         return ob.build();
     }
@@ -155,6 +149,10 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     @Override
     public int compareTo(Product o) {
         return this.getName().compareTo(o.getName());
+    }
+
+    public Object getHours() {
+        return hours;
     }
 
 }
