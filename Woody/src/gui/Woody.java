@@ -229,6 +229,10 @@ public class Woody extends javax.swing.JFrame {
         final AddProductDialog dialog = new AddProductDialog(this, true);
         dialog.setVisible(true);
         
+        if (dialog.isPressedOk()) {
+            Products.getInstance().add(dialog.getProduct());
+        }
+        
         refreshGui();
         try {
             saveProducts();
@@ -238,9 +242,15 @@ public class Woody extends javax.swing.JFrame {
 
     private void editProduct() {
         final AddProductDialog dialog = new AddProductDialog(this, true);
-        final Product product = Products.getInstance().get(jTableProducts.getSelectedRow());
-
+        final int row = jTableProducts.getSelectedRow();
+        final Product product = Products.getInstance().get(row);
+        dialog.setProduct(product);
+        
         dialog.setVisible(true);
+        
+        if (dialog.isPressedOk()) {
+            Products.getInstance().set(row, dialog.getProduct());
+        }
         
         refreshGui();
         try {

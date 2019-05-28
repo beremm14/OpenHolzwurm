@@ -1,10 +1,19 @@
 package gui;
 
+import data.Material;
 import data.Preset;
-import data.Presets;
 import data.Product;
+import data.types.TypeArea;
+import data.types.TypeLength;
+import data.types.TypePiece;
+import data.types.TypeVolume;
 import gui.model.PresetListModel;
 import gui.model.ProductModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -14,7 +23,7 @@ public class AddProductDialog extends javax.swing.JDialog {
     
     private boolean pressedOk = false;
     private Product product = new Product();
-    private final ProductModel productModel = new ProductModel(product);
+    private ProductModel productModel = new ProductModel(product);
     private final PresetListModel presetListModel = new PresetListModel();
 
     /**
@@ -30,6 +39,24 @@ public class AddProductDialog extends javax.swing.JDialog {
         jTableMaterials.setModel(productModel);
         jListPresets.setModel(presetListModel);
         
+        jLabelValue.setText("Wert:");
+    }
+
+    public boolean isPressedOk() {
+        return pressedOk;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+        productModel = new ProductModel(product);
+        jTableMaterials.setModel(productModel);
+        productModel.fireTableDataChanged();
+        jtfName.setText(product.getName());
+        jtfHours.setValue(product.getHours());
     }
 
     /**
@@ -85,9 +112,19 @@ public class AddProductDialog extends javax.swing.JDialog {
         jPanButtons.setLayout(new java.awt.GridLayout());
 
         jbutOK.setText("OK");
+        jbutOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutOKActionPerformed(evt);
+            }
+        });
         jPanButtons.add(jbutOK);
 
         jbutCancel.setText("Abbrechen");
+        jbutCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutCancelActionPerformed(evt);
+            }
+        });
         jPanButtons.add(jbutCancel);
 
         getContentPane().add(jPanButtons, java.awt.BorderLayout.SOUTH);
@@ -105,6 +142,8 @@ public class AddProductDialog extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanControls.add(jLabelPreset, gridBagConstraints);
+
+        jtfValue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -122,6 +161,14 @@ public class AddProductDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanControls.add(jLabelValue, gridBagConstraints);
 
+        jListPresets.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                onPresetList(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                onMousePresetList(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListPresets);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -133,6 +180,11 @@ public class AddProductDialog extends javax.swing.JDialog {
         jPanControls.add(jScrollPane2, gridBagConstraints);
 
         jbutAdd.setText("Hinzufügen");
+        jbutAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutAddActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -142,6 +194,11 @@ public class AddProductDialog extends javax.swing.JDialog {
         jPanControls.add(jbutAdd, gridBagConstraints);
 
         jbutRemove.setText("Entfernen");
+        jbutRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutRemoveActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -198,45 +255,90 @@ public class AddProductDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbutAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutAddActionPerformed
+        try {
+            Preset preset = jListPresets.getSelectedValue();
+            double value = ((Number)jtfValue.getValue()).doubleValue();
+            product.add(new Material(preset, value));
+            productModel.fireTableDataChanged();
+            jtfValue.setValue(null);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Bitte alle Felder korrekt ausfüllen!", "Fehler!", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jbutAddActionPerformed
+
+    private void jbutRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutRemoveActionPerformed
+        product.remove(jTableMaterials.getSelectedRow());
+        productModel.fireTableDataChanged();
+    }//GEN-LAST:event_jbutRemoveActionPerformed
+
+    private void jbutOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutOKActionPerformed
+        if (jtfName.getText().isEmpty() || product.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Bitte das Produkt benennen und Materialien hinzufügen.", "Fehler!", JOptionPane.WARNING_MESSAGE);
+        } else {
+            try {
+                product.setName(jtfName.getText());
+                product.setHours(((Number)jtfHours.getValue()).doubleValue());
+                pressedOk = true;
+                dispose();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Eingaben überprüfen!", "Fehler aufgetreten!", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jbutOKActionPerformed
+
+    private void jbutCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutCancelActionPerformed
+        int answer = JOptionPane.showConfirmDialog(this, "Wollen Sie wirklich abbrechen?", "Warnung - Abbruch", JOptionPane.WARNING_MESSAGE);
+        if (answer == JOptionPane.YES_OPTION) {
+            dispose();
+        }
+    }//GEN-LAST:event_jbutCancelActionPerformed
+
+    private void onPresetList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPresetList
+        String text;
+        if (jListPresets.getSelectedValue() == null) {
+            return;
+        }
+        Preset preset = jListPresets.getSelectedValue();
+        
+        if (preset.getType() instanceof TypeArea) {
+            text = "Fläche:";
+        } else if (preset.getType() instanceof TypeLength) {
+            text = "Länge:";
+        } else if (preset.getType() instanceof TypePiece) {
+            text = "Anzahl:";
+        } else if (preset.getType() instanceof TypeVolume) {
+            text = "Volumen:";
+        } else {
+            text = "Wert:";
+        }
+        
+        jLabelValue.setText(text);
+    }//GEN-LAST:event_onPresetList
+
+    private void onMousePresetList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMousePresetList
+        onPresetList(evt);
+    }//GEN-LAST:event_onMousePresetList
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddProductDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Woody.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AddProductDialog dialog = new AddProductDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        
+        java.awt.EventQueue.invokeLater(() -> {
+            AddProductDialog dialog = new AddProductDialog(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
