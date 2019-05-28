@@ -1,10 +1,6 @@
 package data;
 
 import data.types.Type;
-import data.types.TypeArea;
-import data.types.TypeLength;
-import data.types.TypePiece;
-import data.types.TypeVolume;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -27,25 +23,13 @@ public class Preset implements Comparable<Preset>, JsonObjAble {
     
     public Preset(String name, String type, Double price) {
         this.name = name;
-        switch(type) {
-            case "Area": this.type = new TypeArea(); break;
-            case "Length": this.type = new TypeLength(); break;
-            case "Piece": this.type = new TypePiece(); break;
-            case "Volume": this.type = new TypeVolume(); break;
-            default: this.type = null;
-        }
+        this.type = Type.getType(type);
         this.price = price;
     }
     
     public Preset(String name, String type, String price) {
         this.name = name;
-        switch(type) {
-            case "Area": this.type = new TypeArea(); break;
-            case "Length": this.type = new TypeLength(); break;
-            case "Piece": this.type = new TypePiece(); break;
-            case "Volume": this.type = new TypeVolume(); break;
-            default: this.type = null;
-        }
+        this.type = Type.getType(type);
         this.price = Double.parseDouble(price);
     }
 

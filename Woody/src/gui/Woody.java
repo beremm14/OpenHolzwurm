@@ -1,5 +1,6 @@
 package gui;
 
+import data.Preset;
 import data.Presets;
 import data.Product;
 import data.Products;
@@ -261,6 +262,10 @@ public class Woody extends javax.swing.JFrame {
         final AddPresetDialog dialog = new AddPresetDialog(this, true);
         dialog.setVisible(true);
         
+        if (dialog.isPressedOk() && dialog.getPreset() != null) {
+            Presets.getInstance().add(dialog.getPreset());
+        }
+
         refreshGui();
         try {
             savePresets();
@@ -270,7 +275,8 @@ public class Woody extends javax.swing.JFrame {
     
     private void editPreset() {
         final AddPresetDialog dialog = new AddPresetDialog(this, true);
-        final Product product = Products.getInstance().get(jTablePresets.getSelectedRow());
+        final Preset p = Presets.getInstance().get(jTablePresets.getSelectedRow());
+        dialog.setPreset(p);
         
         dialog.setVisible(true);
         
@@ -282,7 +288,7 @@ public class Woody extends javax.swing.JFrame {
     }
     
     private void removePreset() {
-        Products.getInstance().remove(jTablePresets.getSelectedRow());
+        Presets.getInstance().remove(jTablePresets.getSelectedRow());
         refreshGui();
         try {
             savePresets();

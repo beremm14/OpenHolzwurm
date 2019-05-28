@@ -5,6 +5,17 @@ package data.types;
  * @author emil
  */
 public class TypeVolume extends Type {
+    
+    private static TypeVolume instance;
+    
+    public static TypeVolume getInstance() {
+        if (instance == null) {
+            instance = new TypeVolume();
+        }
+        return instance;
+    }
+    
+    private TypeVolume() {}
 
     @Override
     public String getKey() {
@@ -23,6 +34,11 @@ public class TypeVolume extends Type {
 
     public double calcValue(double length, double width, double heigth) {
         return length * width * heigth;
+    }
+
+    @Override
+    public String toString() {
+        return "Volumen";
     }
 
 }

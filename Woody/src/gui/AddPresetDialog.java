@@ -1,9 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
+
+import data.Preset;
+import data.types.TypeArea;
+import data.types.TypeLength;
+import data.types.TypePiece;
+import data.types.TypeVolume;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -11,14 +17,44 @@ package gui;
  */
 public class AddPresetDialog extends javax.swing.JDialog {
 
+    private boolean pressedOk = false;
+    private Preset preset = null;
+
     /**
      * Creates new form AddPresetDialog
      */
     public AddPresetDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        setTitle("Vorlage hinzufügen...");
+        setResizable(false);
+        setLocationRelativeTo(parent);
+
+        jcbType.addItem(TypeArea.getInstance());
+        jcbType.addItem(TypeLength.getInstance());
+        jcbType.addItem(TypePiece.getInstance());
+        jcbType.addItem(TypeVolume.getInstance());
+
+        data.types.Type type = (data.types.Type) jcbType.getSelectedItem();
+        jLabelUnit.setText("€/" + type.getUnit());
+
     }
 
+    public boolean isPressedOk() {
+        return pressedOk;
+    }
+
+    public Preset getPreset() {
+        return preset;
+    }
+
+    public void setPreset(Preset p) {
+        jtfName.setText(p.getName());
+        jcbType.setSelectedItem(p.getType());
+        jtfPrice.setValue(p.getPrice());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,65 +63,153 @@ public class AddPresetDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jPanMain = new javax.swing.JPanel();
+        jLabelName = new javax.swing.JLabel();
+        jLabelType = new javax.swing.JLabel();
+        jLabelPrice = new javax.swing.JLabel();
+        jLabelUnit = new javax.swing.JLabel();
+        jtfName = new javax.swing.JTextField();
+        jtfPrice = new javax.swing.JFormattedTextField();
+        jcbType = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
+        jbutOK = new javax.swing.JButton();
+        jbutCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jPanMain.setBackground(new java.awt.Color(255, 255, 255));
+        jPanMain.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanMain.setLayout(new java.awt.GridBagLayout());
+
+        jLabelName.setText("Name: ");
+        jPanMain.add(jLabelName, new java.awt.GridBagConstraints());
+
+        jLabelType.setText("Typ: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanMain.add(jLabelType, gridBagConstraints);
+
+        jLabelPrice.setText("Kosten: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        jPanMain.add(jLabelPrice, gridBagConstraints);
+
+        jLabelUnit.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        jPanMain.add(jLabelUnit, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanMain.add(jtfName, gridBagConstraints);
+
+        jtfPrice.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanMain.add(jtfPrice, gridBagConstraints);
+
+        jcbType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onCBType(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanMain.add(jcbType, gridBagConstraints);
+
+        getContentPane().add(jPanMain, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.GridLayout());
+
+        jbutOK.setText("OK");
+        jbutOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onOK(evt);
+            }
+        });
+        jPanel1.add(jbutOK);
+
+        jbutCancel.setText("Abbrechen");
+        jbutCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onCancel(evt);
+            }
+        });
+        jPanel1.add(jbutCancel);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
+        try {
+            preset = new Preset(jtfName.getText(), (data.types.Type) jcbType.getSelectedItem(), (double) jtfPrice.getValue());
+            pressedOk = true;
+            dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Bitte alle Felder korrekt ausfüllen!", "Fehler aufgetreten!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_onOK
+
+    private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCancel
+        dispose();
+    }//GEN-LAST:event_onCancel
+
+    private void onCBType(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCBType
+        data.types.Type type = (data.types.Type) jcbType.getSelectedItem();
+        jLabelUnit.setText("€/" + type.getUnit());
+    }//GEN-LAST:event_onCBType
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddPresetDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddPresetDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddPresetDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddPresetDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Woody.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AddPresetDialog dialog = new AddPresetDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        
+        java.awt.EventQueue.invokeLater(() -> {
+            AddPresetDialog dialog = new AddPresetDialog(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelName;
+    private javax.swing.JLabel jLabelPrice;
+    private javax.swing.JLabel jLabelType;
+    private javax.swing.JLabel jLabelUnit;
+    private javax.swing.JPanel jPanMain;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton jbutCancel;
+    private javax.swing.JButton jbutOK;
+    private javax.swing.JComboBox<data.types.Type> jcbType;
+    private javax.swing.JTextField jtfName;
+    private javax.swing.JFormattedTextField jtfPrice;
     // End of variables declaration//GEN-END:variables
 }
