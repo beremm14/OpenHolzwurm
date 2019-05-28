@@ -161,13 +161,13 @@ public class AddPresetDialog extends javax.swing.JDialog {
 
     private void onOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOK
         for (Preset p : Presets.getInstance().getPresets()) {
-            if (jtfName.getText().equals(p.getName())) {
+            /*if (jtfName.getText().equals(p.getName())) {
                 JOptionPane.showMessageDialog(this, "Vorlagennamen müssen einzigartig sein!", "Warnung!", JOptionPane.WARNING_MESSAGE);
                 return;
-            }
+            }*/
         }
         try {
-            preset = new Preset(jtfName.getText(), (data.types.Type) jcbType.getSelectedItem(), (double) jtfPrice.getValue());
+            preset = new Preset(jtfName.getText(), (data.types.Type) jcbType.getSelectedItem(), ((Number)jtfPrice.getValue()).doubleValue());
             pressedOk = true;
             dispose();
         } catch (Exception ex) {

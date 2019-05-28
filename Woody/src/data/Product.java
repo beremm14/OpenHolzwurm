@@ -91,6 +91,10 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     public Material remove(int index) {
         return materials.remove(index);
     }
+    
+    public void remove(Material m) {
+        materials.remove(m);
+    }
 
     public void setName(String name) {
         this.name = name;

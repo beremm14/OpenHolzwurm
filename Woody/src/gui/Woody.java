@@ -1,5 +1,6 @@
 package gui;
 
+import data.Material;
 import data.Preset;
 import data.Presets;
 import data.Product;
@@ -54,7 +55,7 @@ public class Woody extends javax.swing.JFrame {
         refreshGui();
     }
 
-    public void refreshGui() {
+    private void refreshGui() {
         jbutEditPreset.setEnabled(false);
         jmiEditPreset.setEnabled(false);
         jbutRemovePreset.setEnabled(false);
@@ -87,6 +88,11 @@ public class Woody extends javax.swing.JFrame {
         
         presetModel.fireTableDataChanged();
         overviewModel.fireTableDataChanged();
+    }
+    
+    private void refreshProducts() throws IOException {
+        saveProducts();
+        loadProducts();
     }
     
     private void showErrMess(String message) {
@@ -285,11 +291,19 @@ public class Woody extends javax.swing.JFrame {
     
     private void editPreset() {
         final AddPresetDialog dialog = new AddPresetDialog(this, true);
-        final Preset p = Presets.getInstance().get(jTablePresets.getSelectedRow());
+        final int row = jTablePresets.getSelectedRow();
+        final Preset p = Presets.getInstance().get(row);
         dialog.setPreset(p);
         
         dialog.setVisible(true);
         
+        if (dialog.isPressedOk()) {
+            Presets.getInstance().set(row, dialog.getPreset());
+            try {
+                refreshProducts();
+            } catch (IOException ex) {
+            }
+        }
         refreshGui();
         try {
             savePresets();
