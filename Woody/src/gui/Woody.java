@@ -493,10 +493,20 @@ public class Woody extends javax.swing.JFrame {
 
         jmiSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.META_MASK));
         jmiSettings.setText("Einstellungen");
+        jmiSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiSettingsActionPerformed(evt);
+            }
+        });
         jMenuFile.add(jmiSettings);
 
         jmiExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.META_MASK));
         jmiExit.setText("Beenden");
+        jmiExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExitActionPerformed(evt);
+            }
+        });
         jMenuFile.add(jmiExit);
 
         jMenuBar1.add(jMenuFile);
@@ -720,6 +730,15 @@ public class Woody extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_jmiExportPresetsActionPerformed
+
+    private void jmiSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSettingsActionPerformed
+        final SettingsDialog dialog = new SettingsDialog(this, true);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jmiSettingsActionPerformed
+
+    private void jmiExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jmiExitActionPerformed
 
     /**
      * @param args the command line arguments
