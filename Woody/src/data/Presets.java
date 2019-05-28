@@ -38,7 +38,9 @@ public class Presets implements JsonExport {
     }
 
     public boolean add(Preset e) {
-        return presets.add(e);
+        boolean rv = presets.add(e);
+        Collections.sort(presets);
+        return rv;
     }
 
     public Preset get(int index) {
@@ -46,11 +48,15 @@ public class Presets implements JsonExport {
     }
 
     public Preset set(int index, Preset element) {
-        return presets.set(index, element);
+        Preset rv = presets.set(index, element);
+        Collections.sort(presets);
+        return rv;
     }
 
     public Preset remove(int index) {
-        return presets.remove(index);
+        Preset rv = presets.remove(index);
+        Collections.sort(presets);
+        return rv;
     }
     
     public List<Preset> getPresets() {

@@ -257,6 +257,39 @@ public class Woody extends javax.swing.JFrame {
         }
     }
     
+    private void addPreset() {
+        final AddPresetDialog dialog = new AddPresetDialog(this, true);
+        dialog.setVisible(true);
+        
+        refreshGui();
+        try {
+            savePresets();
+        } catch (IOException ex) {
+        }
+    }
+    
+    private void editPreset() {
+        final AddPresetDialog dialog = new AddPresetDialog(this, true);
+        final Product product = Products.getInstance().get(jTablePresets.getSelectedRow());
+        
+        dialog.setVisible(true);
+        
+        refreshGui();
+        try {
+            savePresets();
+        } catch (IOException ex) {
+        }
+    }
+    
+    private void removePreset() {
+        Products.getInstance().remove(jTablePresets.getSelectedRow());
+        refreshGui();
+        try {
+            savePresets();
+        } catch (IOException ex) {
+        }
+    }
+    
     private FileInputStream openFile() throws FileNotFoundException, Exception {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON File", "json");
@@ -415,6 +448,11 @@ public class Woody extends javax.swing.JFrame {
         jPanPreButt.setLayout(new java.awt.GridBagLayout());
 
         jbutAddPreset.setText("Hinzufügen");
+        jbutAddPreset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutAddPresetActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -422,6 +460,11 @@ public class Woody extends javax.swing.JFrame {
         jPanPreButt.add(jbutAddPreset, gridBagConstraints);
 
         jbutEditPreset.setText("Bearbeiten");
+        jbutEditPreset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutEditPresetActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -429,6 +472,11 @@ public class Woody extends javax.swing.JFrame {
         jPanPreButt.add(jbutEditPreset, gridBagConstraints);
 
         jbutRemovePreset.setText("Entfernen");
+        jbutRemovePreset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutRemovePresetActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -525,23 +573,48 @@ public class Woody extends javax.swing.JFrame {
 
         jmiLoadPresets.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiLoadPresets.setText("Vorlagen laden");
+        jmiLoadPresets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiLoadPresetsActionPerformed(evt);
+            }
+        });
         jMenuPresets.add(jmiLoadPresets);
 
         jmiExportPresets.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiExportPresets.setText("Vorlagen exportieren");
+        jmiExportPresets.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiExportPresetsActionPerformed(evt);
+            }
+        });
         jMenuPresets.add(jmiExportPresets);
         jMenuPresets.add(jSeparator2);
 
         jmiAddPreset.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiAddPreset.setText("Vorlage hinzufügen");
+        jmiAddPreset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAddPresetActionPerformed(evt);
+            }
+        });
         jMenuPresets.add(jmiAddPreset);
 
         jmiEditPreset.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiEditPreset.setText("Vorlage bearbeiten");
+        jmiEditPreset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEditPresetActionPerformed(evt);
+            }
+        });
         jMenuPresets.add(jmiEditPreset);
 
         jmiRemovePreset.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.META_MASK));
         jmiRemovePreset.setText("Vorlage entfernen");
+        jmiRemovePreset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRemovePresetActionPerformed(evt);
+            }
+        });
         jMenuPresets.add(jmiRemovePreset);
 
         jMenuBar1.add(jMenuPresets);
@@ -576,11 +649,13 @@ public class Woody extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiRemoveProductActionPerformed
 
     private void jmiOpenOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiOpenOneActionPerformed
-        final Product product = Products.getInstance().get(jTableProducts.getSelectedRow());
-        try {
-            product.writeTo(saveFile());
+        JsonObject jsonObj = null;
+        try (JsonReader jsonReader = Json.createReader(openFile())) {
+            jsonObj = jsonReader.readObject();
         } catch (Exception ex) {
         }
+        Products.getInstance().add(new Product(jsonObj));
+        refreshGui();
     }//GEN-LAST:event_jmiOpenOneActionPerformed
 
     private void jmiOpenMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiOpenMoreActionPerformed
@@ -592,13 +667,11 @@ public class Woody extends javax.swing.JFrame {
     }//GEN-LAST:event_jmiOpenMoreActionPerformed
 
     private void jmiSaveOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveOneActionPerformed
-        JsonObject jsonObj = null;
-        try (JsonReader jsonReader = Json.createReader(openFile())) {
-            jsonObj = jsonReader.readObject();
+        final Product product = Products.getInstance().get(jTableProducts.getSelectedRow());
+        try {
+            product.writeTo(saveFile());
         } catch (Exception ex) {
         }
-        Products.getInstance().add(new Product(jsonObj));
-        refreshGui();
     }//GEN-LAST:event_jmiSaveOneActionPerformed
 
     private void jmiSaveMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveMoreActionPerformed
@@ -607,6 +680,46 @@ public class Woody extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_jmiSaveMoreActionPerformed
+
+    private void jbutAddPresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutAddPresetActionPerformed
+        addPreset();
+    }//GEN-LAST:event_jbutAddPresetActionPerformed
+
+    private void jmiAddPresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAddPresetActionPerformed
+        addPreset();
+    }//GEN-LAST:event_jmiAddPresetActionPerformed
+
+    private void jbutEditPresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutEditPresetActionPerformed
+        editPreset();
+    }//GEN-LAST:event_jbutEditPresetActionPerformed
+
+    private void jmiEditPresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEditPresetActionPerformed
+        editPreset();
+    }//GEN-LAST:event_jmiEditPresetActionPerformed
+
+    private void jbutRemovePresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutRemovePresetActionPerformed
+        removePreset();
+    }//GEN-LAST:event_jbutRemovePresetActionPerformed
+
+    private void jmiRemovePresetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRemovePresetActionPerformed
+        removePreset();
+    }//GEN-LAST:event_jmiRemovePresetActionPerformed
+
+    private void jmiLoadPresetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiLoadPresetsActionPerformed
+        try {
+            Presets.getInstance().loadInto(openFile());
+            refreshGui();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jmiLoadPresetsActionPerformed
+
+    private void jmiExportPresetsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExportPresetsActionPerformed
+        try {
+            Products.getInstance().writeTo(saveFile());
+            refreshGui();
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_jmiExportPresetsActionPerformed
 
     /**
      * @param args the command line arguments

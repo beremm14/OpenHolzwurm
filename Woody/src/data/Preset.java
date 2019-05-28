@@ -49,6 +49,10 @@ public class Preset implements Comparable<Preset>, JsonObjAble {
         this.price = Double.parseDouble(price);
     }
 
+    public Preset(JsonObject jsonObj) {
+        
+    }
+
     public String getName() {
         return name;
     }
