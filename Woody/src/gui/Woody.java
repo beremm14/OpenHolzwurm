@@ -1,6 +1,7 @@
 package gui;
 
 import data.Presets;
+import data.Product;
 import data.Products;
 import gui.model.OverviewModel;
 import gui.model.PresetModel;
@@ -40,11 +41,57 @@ public class Woody extends javax.swing.JFrame {
 
         try {
             loadPresets();
-            presetModel.fireTableDataChanged();
             loadProducts();
-            overviewModel.fireTableDataChanged();
         } catch (Exception e) {
         }
+        refreshGui();
+    }
+
+    public void refreshGui() {
+        jbutEditPreset.setEnabled(false);
+        jmiEditPreset.setEnabled(false);
+        jbutRemovePreset.setEnabled(false);
+        jmiRemovePreset.setEnabled(false);
+        jmiExportPresets.setEnabled(false);
+
+        jbutEditProduct.setEnabled(false);
+        jmiEditProduct.setEnabled(false);
+        jbutRemoveProduct.setEnabled(false);
+        jmiRemoveProduct.setEnabled(false);
+        jmiSaveOne.setEnabled(false);
+        jmiSaveMore.setEnabled(false);
+
+        if (!Presets.getInstance().isEmpty()) {
+            jbutEditPreset.setEnabled(true);
+            jmiEditPreset.setEnabled(true);
+            jbutRemovePreset.setEnabled(true);
+            jmiRemovePreset.setEnabled(true);
+            jmiExportPresets.setEnabled(true);
+        }
+
+        if (!Products.getInstance().isEmpty()) {
+            jbutEditProduct.setEnabled(true);
+            jmiEditProduct.setEnabled(true);
+            jbutRemoveProduct.setEnabled(true);
+            jmiRemoveProduct.setEnabled(true);
+            jmiSaveOne.setEnabled(true);
+            jmiSaveMore.setEnabled(true);
+        }
+        
+        presetModel.fireTableDataChanged();
+        overviewModel.fireTableDataChanged();
+    }
+    
+    private void showErrMess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Fehler aufgetreten!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void showWarnMess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Warnung!", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    private void showInfoMess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void savePresets() throws IOException {
@@ -73,7 +120,7 @@ public class Woody extends javax.swing.JFrame {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(presetFile))) {
             Presets.getInstance().writeTo(w);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            showErrMess("Fehler beim Speichern aufgetreten...");
         }
 
     }
@@ -104,7 +151,7 @@ public class Woody extends javax.swing.JFrame {
         try {
             Presets.getInstance().loadInto(new FileInputStream(presetFile));
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            showErrMess("Fehler beim Laden aufgetreten...");
         }
 
     }
@@ -135,7 +182,7 @@ public class Woody extends javax.swing.JFrame {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(productFile))) {
             Products.getInstance().writeTo(w);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            showErrMess("Fehler beim Speichern aufgetreten...");
         }
 
     }
@@ -166,9 +213,42 @@ public class Woody extends javax.swing.JFrame {
         try {
             Products.getInstance().loadInto(new FileInputStream(presetFile));
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            showErrMess("Fehler beim Laden aufgetreten...");
         }
 
+    }
+
+    private void addProduct() {
+        final AddProductDialog dialog = new AddProductDialog(this, true);
+        dialog.setVisible(true);
+        
+        refreshGui();
+        try {
+            saveProducts();
+        } catch (IOException ex) {
+        }
+    }
+
+    private void editProduct() {
+        final AddProductDialog dialog = new AddProductDialog(this, true);
+        final Product product = Products.getInstance().get(jTableProducts.getSelectedRow());
+
+        dialog.setVisible(true);
+        
+        refreshGui();
+        try {
+            saveProducts();
+        } catch (IOException ex) {
+        }
+    }
+
+    private void removeProduct() {
+        Products.getInstance().remove(jTableProducts.getSelectedRow());
+        refreshGui();
+        try {
+            saveProducts();
+        } catch (IOException ex) {
+        }
     }
 
     /**
@@ -244,6 +324,11 @@ public class Woody extends javax.swing.JFrame {
         jPanProdButt.setLayout(new java.awt.GridBagLayout());
 
         jbutAddProduct.setText("Hinzufügen");
+        jbutAddProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutAddProductActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -251,6 +336,11 @@ public class Woody extends javax.swing.JFrame {
         jPanProdButt.add(jbutAddProduct, gridBagConstraints);
 
         jbutEditProduct.setText("Bearbeiten");
+        jbutEditProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutEditProductActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -258,6 +348,11 @@ public class Woody extends javax.swing.JFrame {
         jPanProdButt.add(jbutEditProduct, gridBagConstraints);
 
         jbutRemoveProduct.setText("Entfernen");
+        jbutRemoveProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbutRemoveProductActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 0.5;
@@ -349,14 +444,29 @@ public class Woody extends javax.swing.JFrame {
 
         jmiAddProduct.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.META_MASK));
         jmiAddProduct.setText("Produkt hinzufügen");
+        jmiAddProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAddProductActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiAddProduct);
 
         jmiEditProduct.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.META_MASK));
         jmiEditProduct.setText("Produkt bearbeiten");
+        jmiEditProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiEditProductActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiEditProduct);
 
         jmiRemoveProduct.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.META_MASK));
         jmiRemoveProduct.setText("Produkt entfernen");
+        jmiRemoveProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiRemoveProductActionPerformed(evt);
+            }
+        });
         jMenuProduct.add(jmiRemoveProduct);
 
         jMenuBar1.add(jMenuProduct);
@@ -390,6 +500,30 @@ public class Woody extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbutAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutAddProductActionPerformed
+        addProduct();
+    }//GEN-LAST:event_jbutAddProductActionPerformed
+
+    private void jmiAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAddProductActionPerformed
+        addProduct();
+    }//GEN-LAST:event_jmiAddProductActionPerformed
+
+    private void jbutEditProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutEditProductActionPerformed
+        editProduct();
+    }//GEN-LAST:event_jbutEditProductActionPerformed
+
+    private void jmiEditProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEditProductActionPerformed
+        editProduct();
+    }//GEN-LAST:event_jmiEditProductActionPerformed
+
+    private void jbutRemoveProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutRemoveProductActionPerformed
+        removeProduct();
+    }//GEN-LAST:event_jbutRemoveProductActionPerformed
+
+    private void jmiRemoveProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiRemoveProductActionPerformed
+        removeProduct();
+    }//GEN-LAST:event_jmiRemoveProductActionPerformed
 
     /**
      * @param args the command line arguments

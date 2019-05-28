@@ -57,6 +57,10 @@ public class Presets implements JsonExport {
         return presets;
     }
 
+    public boolean isEmpty() {
+        return presets.isEmpty();
+    }
+
     @Override
     public void writeTo(BufferedWriter w) throws IOException {
         Collections.sort(presets);
