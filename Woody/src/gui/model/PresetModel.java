@@ -1,6 +1,7 @@
 package gui.model;
 
 import data.Presets;
+import java.util.Locale;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -26,7 +27,7 @@ public class PresetModel extends AbstractTableModel {
         switch(columnIndex) {
             case 0: return Presets.getInstance().get(rowIndex).getName();
             case 1: return Presets.getInstance().get(rowIndex).getType().getDisplayName();
-            case 2: return Presets.getInstance().get(rowIndex).getPrice() + " "
+            case 2: return String.format(Locale.GERMAN, "%.2f", Presets.getInstance().get(rowIndex).getPrice()) + "€ / "
                          + Presets.getInstance().get(rowIndex).getType().getUnit();
             default: throw new RuntimeException("Wrong column index");
         }

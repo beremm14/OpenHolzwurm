@@ -18,7 +18,7 @@ public class TypePiece extends Type {
 
     @Override
     public String getUnit() {
-        return "";
+        return "Stk.";
     }
 
 }

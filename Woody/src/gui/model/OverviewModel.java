@@ -1,6 +1,7 @@
 package gui.model;
 
 import data.Products;
+import java.util.Locale;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -24,8 +25,8 @@ public class OverviewModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex) {
-            case 0: Products.getInstance().get(rowIndex).getName();
-            case 1: Products.getInstance().get(rowIndex).getPrice();
+            case 0: return Products.getInstance().get(rowIndex).getName();
+            case 1: return String.format(Locale.GERMAN, "%.2f€", Products.getInstance().get(rowIndex).getPrice());
             default: throw new RuntimeException("Wrong column index");
         }
     }
