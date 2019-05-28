@@ -25,7 +25,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author emil
  */
 public class Woody extends javax.swing.JFrame {
-    
+
     private final OverviewModel overviewModel = new OverviewModel();
     private final PresetModel presetModel = new PresetModel();
 
@@ -38,18 +38,24 @@ public class Woody extends javax.swing.JFrame {
         setTitle("Woody");
         setSize(new Dimension(1000, 750));
         setLocationRelativeTo(null);
-        
+
         jTablePresets.setModel(presetModel);
         jTableProducts.setModel(overviewModel);
-        
+
         Presets.getInstance().add(new Preset("Räder", new TypePiece(), 0.20));
         presetModel.fireTableDataChanged();
-        
+
         Products.getInstance().add(new Product("Auto"));
         Products.getInstance().get(0).add(new Material(Presets.getInstance().get(0), 4));
         overviewModel.fireTableDataChanged();
+
+        try {
+            savePresets();
+            saveProducts();
+        } catch (Exception e) {
+        }
     }
-    
+
     public void savePresets() throws IOException {
         File home;
         File folder;
@@ -73,15 +79,14 @@ public class Woody extends javax.swing.JFrame {
             presetFile = new File("Presets.json");
         }
 
-        if (presetFile.exists()) {
-            try {
-                Presets.getInstance().writeTo(new BufferedWriter(new FileWriter(presetFile)));
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
-            }
+        try {
+            Presets.getInstance().writeTo(new BufferedWriter(new FileWriter(presetFile)));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
         }
+
     }
-    
+
     public void loadPresets() throws IOException {
         File home;
         File folder;
@@ -105,15 +110,14 @@ public class Woody extends javax.swing.JFrame {
             presetFile = new File("Presets.json");
         }
 
-        if (presetFile.exists()) {
-            try {
-                Presets.getInstance().loadInto(new FileInputStream(presetFile));
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
-            }
+        try {
+            Presets.getInstance().loadInto(new FileInputStream(presetFile));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
         }
+
     }
-    
+
     public void saveProducts() throws IOException {
         File home;
         File folder;
@@ -137,15 +141,14 @@ public class Woody extends javax.swing.JFrame {
             productFile = new File("Products.json");
         }
 
-        if (productFile.exists()) {
-            try {
-                Products.getInstance().writeTo(new BufferedWriter(new FileWriter(productFile)));
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
-            }
+        try {
+            Products.getInstance().writeTo(new BufferedWriter(new FileWriter(productFile)));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
         }
+
     }
-    
+
     public void loadProducts() throws IOException {
         File home;
         File folder;
@@ -169,13 +172,12 @@ public class Woody extends javax.swing.JFrame {
             presetFile = new File("Products.json");
         }
 
-        if (presetFile.exists()) {
-            try {
-                Products.getInstance().loadInto(new FileInputStream(presetFile));
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
-            }
+        try {
+            Products.getInstance().loadInto(new FileInputStream(presetFile));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     /**
