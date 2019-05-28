@@ -9,8 +9,14 @@ import data.types.TypePiece;
 import gui.model.OverviewModel;
 import gui.model.PresetModel;
 import java.awt.Dimension;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -42,6 +48,134 @@ public class Woody extends javax.swing.JFrame {
         Products.getInstance().add(new Product("Auto"));
         Products.getInstance().get(0).add(new Material(Presets.getInstance().get(0), 4));
         overviewModel.fireTableDataChanged();
+    }
+    
+    public void savePresets() throws IOException {
+        File home;
+        File folder;
+        File presetFile;
+
+        try {
+            home = new File(System.getProperty("user.home"));
+        } catch (Exception e) {
+            home = null;
+        }
+
+        if (home != null && home.exists()) {
+            folder = new File(home + File.separator + "Woody");
+            if (!folder.exists()) {
+                if (!folder.mkdir()) {
+                    throw new IOException("Internal Error");
+                }
+            }
+            presetFile = new File(folder + File.separator + "Presets.json");
+        } else {
+            presetFile = new File("Presets.json");
+        }
+
+        if (presetFile.exists()) {
+            try {
+                Presets.getInstance().writeTo(new BufferedWriter(new FileWriter(presetFile)));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    public void loadPresets() throws IOException {
+        File home;
+        File folder;
+        File presetFile;
+
+        try {
+            home = new File(System.getProperty("user.home"));
+        } catch (Exception e) {
+            home = null;
+        }
+
+        if (home != null && home.exists()) {
+            folder = new File(home + File.separator + "Woody");
+            if (!folder.exists()) {
+                if (!folder.mkdir()) {
+                    throw new IOException("Internal Error");
+                }
+            }
+            presetFile = new File(folder + File.separator + "Presets.json");
+        } else {
+            presetFile = new File("Presets.json");
+        }
+
+        if (presetFile.exists()) {
+            try {
+                Presets.getInstance().loadInto(new FileInputStream(presetFile));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    public void saveProducts() throws IOException {
+        File home;
+        File folder;
+        File productFile;
+
+        try {
+            home = new File(System.getProperty("user.home"));
+        } catch (Exception e) {
+            home = null;
+        }
+
+        if (home != null && home.exists()) {
+            folder = new File(home + File.separator + "Woody");
+            if (!folder.exists()) {
+                if (!folder.mkdir()) {
+                    throw new IOException("Internal Error");
+                }
+            }
+            productFile = new File(folder + File.separator + "Products.json");
+        } else {
+            productFile = new File("Products.json");
+        }
+
+        if (productFile.exists()) {
+            try {
+                Products.getInstance().writeTo(new BufferedWriter(new FileWriter(productFile)));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    public void loadProducts() throws IOException {
+        File home;
+        File folder;
+        File presetFile;
+
+        try {
+            home = new File(System.getProperty("user.home"));
+        } catch (Exception e) {
+            home = null;
+        }
+
+        if (home != null && home.exists()) {
+            folder = new File(home + File.separator + "Woody");
+            if (!folder.exists()) {
+                if (!folder.mkdir()) {
+                    throw new IOException("Internal Error");
+                }
+            }
+            presetFile = new File(folder + File.separator + "Products.json");
+        } else {
+            presetFile = new File("Products.json");
+        }
+
+        if (presetFile.exists()) {
+            try {
+                Products.getInstance().loadInto(new FileInputStream(presetFile));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Fehler beim Spiechern aufgetreten...", "Fehler aufgetreten", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     /**
