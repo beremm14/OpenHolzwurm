@@ -1,10 +1,12 @@
 package gui;
 
+import data.Config;
 import data.Material;
 import data.Preset;
 import data.Presets;
 import data.Product;
 import data.Products;
+import data.Unit;
 import gui.model.OverviewModel;
 import gui.model.PresetModel;
 import java.awt.Dimension;
@@ -48,6 +50,7 @@ public class Woody extends javax.swing.JFrame {
         jTableProducts.setModel(overviewModel);
 
         try {
+            loadConfig();
             loadPresets();
             loadProducts();
         } catch (Exception e) {
@@ -86,6 +89,8 @@ public class Woody extends javax.swing.JFrame {
             jmiSaveMore.setEnabled(true);
         }
         
+        jcbUnit.setSelectedItem(Config.getInstance().getUnit().toString());
+        
         presetModel.fireTableDataChanged();
         overviewModel.fireTableDataChanged();
     }
@@ -107,7 +112,7 @@ public class Woody extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void savePresets() throws IOException {
+    private void savePresets() throws IOException {
         File home;
         File folder;
         File presetFile;
@@ -138,7 +143,7 @@ public class Woody extends javax.swing.JFrame {
 
     }
 
-    public void loadPresets() throws IOException {
+    private void loadPresets() throws IOException {
         File home;
         File folder;
         File presetFile;
@@ -169,7 +174,7 @@ public class Woody extends javax.swing.JFrame {
 
     }
 
-    public void saveProducts() throws IOException {
+    private void saveProducts() throws IOException {
         File home;
         File folder;
         File productFile;
@@ -200,7 +205,7 @@ public class Woody extends javax.swing.JFrame {
 
     }
 
-    public void loadProducts() throws IOException {
+    private void loadProducts() throws IOException {
         File home;
         File folder;
         File presetFile;
@@ -225,6 +230,68 @@ public class Woody extends javax.swing.JFrame {
 
         try {
             Products.getInstance().loadInto(new FileInputStream(presetFile));
+        } catch (IOException ex) {
+            showErrMess("Fehler beim Laden aufgetreten...");
+        }
+
+    }
+    
+    private void saveConfig() throws IOException {
+        File home;
+        File folder;
+        File configFile;
+
+        try {
+            home = new File(System.getProperty("user.home"));
+        } catch (Exception e) {
+            home = null;
+        }
+
+        if (home != null && home.exists()) {
+            folder = new File(home + File.separator + "Woody");
+            if (!folder.exists()) {
+                if (!folder.mkdir()) {
+                    throw new IOException("Internal Error");
+                }
+            }
+            configFile = new File(folder + File.separator + "Config.json");
+        } else {
+            configFile = new File("Config.json");
+        }
+
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(configFile))) {
+            Config.getInstance().writeTo(w);
+        } catch (IOException ex) {
+            showErrMess("Fehler beim Speichern aufgetreten...");
+        }
+
+    }
+
+    private void loadConfig() throws IOException {
+        File home;
+        File folder;
+        File presetFile;
+
+        try {
+            home = new File(System.getProperty("user.home"));
+        } catch (Exception e) {
+            home = null;
+        }
+
+        if (home != null && home.exists()) {
+            folder = new File(home + File.separator + "Woody");
+            if (!folder.exists()) {
+                if (!folder.mkdir()) {
+                    throw new IOException("Internal Error");
+                }
+            }
+            presetFile = new File(folder + File.separator + "Config.json");
+        } else {
+            presetFile = new File("Config.json");
+        }
+
+        try {
+            Config.getInstance().loadInto(new FileInputStream(presetFile));
         } catch (IOException ex) {
             showErrMess("Fehler beim Laden aufgetreten...");
         }
@@ -526,6 +593,11 @@ public class Woody extends javax.swing.JFrame {
         jPanSettings.add(jLabelUnit, new java.awt.GridBagConstraints());
 
         jcbUnit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Millimeter", "Zentimeter", "Meter", "Zoll" }));
+        jcbUnit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbUnitActionPerformed(evt);
+            }
+        });
         jPanSettings.add(jcbUnit, new java.awt.GridBagConstraints());
 
         jTab.addTab("Einstellungen", jPanSettings);
@@ -768,6 +840,16 @@ public class Woody extends javax.swing.JFrame {
     private void jmiExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jmiExitActionPerformed
+
+    private void jcbUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbUnitActionPerformed
+        Unit unit = Unit.setUnit((String) jcbUnit.getSelectedItem());
+        System.out.println(unit.toString());
+        Config.getInstance().setUnit(unit);
+        try {
+            saveConfig();
+        } catch (IOException ex) {
+        }
+    }//GEN-LAST:event_jcbUnitActionPerformed
 
     /**
      * @param args the command line arguments

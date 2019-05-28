@@ -41,6 +41,7 @@ public class Config implements JsonExport {
         JsonObjectBuilder b = Json.createObjectBuilder();
         
         b.add("Unit", unit.name());
+        w.write(b.build().toString());
     }
 
     @Override
