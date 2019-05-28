@@ -1,16 +1,34 @@
 package gui;
 
+import gui.model.OverviewModel;
+import gui.model.PresetModel;
+import java.awt.Dimension;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author emil
  */
 public class Woody extends javax.swing.JFrame {
+    
+    private final OverviewModel overviewModel = new OverviewModel();
+    private final PresetModel presetModel = new PresetModel();
 
     /**
      * Creates new form Woody
      */
     public Woody() {
         initComponents();
+
+        setTitle("Woody");
+        setSize(new Dimension(1000, 750));
+        setLocationRelativeTo(null);
+        
+        jTablePresets.setModel(presetModel);
+        jTableProducts.setModel(overviewModel);
     }
 
     /**
@@ -21,19 +39,153 @@ public class Woody extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jTab = new javax.swing.JTabbedPane();
+        jPanProducts = new javax.swing.JPanel();
+        jspProducts = new javax.swing.JScrollPane();
+        jTableProducts = new javax.swing.JTable();
+        jPanProdButt = new javax.swing.JPanel();
+        jbutAddProd = new javax.swing.JButton();
+        jbutEditProd = new javax.swing.JButton();
+        jbutRemProd = new javax.swing.JButton();
+        jPanProdCost = new javax.swing.JPanel();
+        jLabelProdCost = new javax.swing.JLabel();
+        jtfProdCost = new javax.swing.JTextField();
+        jPanPresets = new javax.swing.JPanel();
+        jspPresets = new javax.swing.JScrollPane();
+        jTablePresets = new javax.swing.JTable();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuFile = new javax.swing.JMenu();
+        jmiOpen = new javax.swing.JMenuItem();
+        jmiSave = new javax.swing.JMenuItem();
+        jmiSettings = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jmiExit = new javax.swing.JMenuItem();
+        jMenuProduct = new javax.swing.JMenu();
+        jMenuPresets = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jTab.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanProducts.setBackground(new java.awt.Color(255, 255, 255));
+        jPanProducts.setLayout(new java.awt.BorderLayout());
+
+        jTableProducts.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jspProducts.setViewportView(jTableProducts);
+
+        jPanProducts.add(jspProducts, java.awt.BorderLayout.CENTER);
+
+        jPanProdButt.setBackground(new java.awt.Color(255, 255, 255));
+        jPanProdButt.setLayout(new java.awt.GridBagLayout());
+
+        jbutAddProd.setText("Hinzufügen");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.5;
+        jPanProdButt.add(jbutAddProd, gridBagConstraints);
+
+        jbutEditProd.setText("Bearbeiten");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.5;
+        jPanProdButt.add(jbutEditProd, gridBagConstraints);
+
+        jbutRemProd.setText("Entfernen");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.5;
+        jPanProdButt.add(jbutRemProd, gridBagConstraints);
+
+        jPanProducts.add(jPanProdButt, java.awt.BorderLayout.SOUTH);
+
+        jPanProdCost.setBackground(new java.awt.Color(255, 255, 255));
+        jPanProdCost.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        jPanProdCost.setLayout(new java.awt.GridBagLayout());
+
+        jLabelProdCost.setText("Kosten: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanProdCost.add(jLabelProdCost, gridBagConstraints);
+
+        jtfProdCost.setEditable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        jPanProdCost.add(jtfProdCost, gridBagConstraints);
+
+        jPanProducts.add(jPanProdCost, java.awt.BorderLayout.NORTH);
+
+        jTab.addTab("Produkte", jPanProducts);
+
+        jPanPresets.setBackground(new java.awt.Color(255, 255, 255));
+        jPanPresets.setLayout(new java.awt.BorderLayout());
+
+        jTablePresets.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jspPresets.setViewportView(jTablePresets);
+
+        jPanPresets.add(jspPresets, java.awt.BorderLayout.CENTER);
+
+        jTab.addTab("Vorlagen", jPanPresets);
+
+        getContentPane().add(jTab, java.awt.BorderLayout.CENTER);
+
+        jMenuFile.setText("Datei");
+
+        jmiOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.META_MASK));
+        jmiOpen.setText("Öffnen");
+        jMenuFile.add(jmiOpen);
+
+        jmiSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.META_MASK));
+        jmiSave.setText("Speichern");
+        jMenuFile.add(jmiSave);
+
+        jmiSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.META_MASK));
+        jmiSettings.setText("Einstellungen");
+        jMenuFile.add(jmiSettings);
+        jMenuFile.add(jSeparator1);
+
+        jmiExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.META_MASK));
+        jmiExit.setText("Beenden");
+        jMenuFile.add(jmiExit);
+
+        jMenuBar1.add(jMenuFile);
+
+        jMenuProduct.setText("Produkte");
+        jMenuBar1.add(jMenuProduct);
+
+        jMenuPresets.setText("Vorlagen");
+        jMenuBar1.add(jMenuPresets);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -42,35 +194,46 @@ public class Woody extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Woody.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Woody.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Woody.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Woody.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Woody.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
+        if (System.getProperty("os.name").contains("Mac OS X")) {
+            System.setProperty("apple.awt.fileDialogForDirectories", "true");
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Woody");
+        }
+
         java.awt.EventQueue.invokeLater(() -> {
             new Woody().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelProdCost;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuFile;
+    private javax.swing.JMenu jMenuPresets;
+    private javax.swing.JMenu jMenuProduct;
+    private javax.swing.JPanel jPanPresets;
+    private javax.swing.JPanel jPanProdButt;
+    private javax.swing.JPanel jPanProdCost;
+    private javax.swing.JPanel jPanProducts;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JTabbedPane jTab;
+    private javax.swing.JTable jTablePresets;
+    private javax.swing.JTable jTableProducts;
+    private javax.swing.JButton jbutAddProd;
+    private javax.swing.JButton jbutEditProd;
+    private javax.swing.JButton jbutRemProd;
+    private javax.swing.JMenuItem jmiExit;
+    private javax.swing.JMenuItem jmiOpen;
+    private javax.swing.JMenuItem jmiSave;
+    private javax.swing.JMenuItem jmiSettings;
+    private javax.swing.JScrollPane jspPresets;
+    private javax.swing.JScrollPane jspProducts;
+    private javax.swing.JTextField jtfProdCost;
     // End of variables declaration//GEN-END:variables
 }
