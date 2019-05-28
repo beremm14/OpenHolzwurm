@@ -36,5 +36,9 @@ public class TypePiece extends Type {
     public String toString() {
         return "Stück";
     }
+    
+    public int calcValue(int count) {
+        return count;
+    }
 
 }

@@ -369,9 +369,11 @@ public class Woody extends javax.swing.JFrame {
         jbutAddPreset = new javax.swing.JButton();
         jbutEditPreset = new javax.swing.JButton();
         jbutRemovePreset = new javax.swing.JButton();
+        jPanSettings = new javax.swing.JPanel();
+        jLabelUnit = new javax.swing.JLabel();
+        jcbUnit = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
-        jmiSettings = new javax.swing.JMenuItem();
         jmiExit = new javax.swing.JMenuItem();
         jMenuProduct = new javax.swing.JMenu();
         jmiOpenOne = new javax.swing.JMenuItem();
@@ -517,18 +519,20 @@ public class Woody extends javax.swing.JFrame {
 
         jTab.addTab("Vorlagen", jPanPresets);
 
+        jPanSettings.setBackground(new java.awt.Color(255, 255, 255));
+        jPanSettings.setLayout(new java.awt.GridBagLayout());
+
+        jLabelUnit.setText("Einheit: ");
+        jPanSettings.add(jLabelUnit, new java.awt.GridBagConstraints());
+
+        jcbUnit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Millimeter", "Zentimeter", "Meter", "Zoll" }));
+        jPanSettings.add(jcbUnit, new java.awt.GridBagConstraints());
+
+        jTab.addTab("Einstellungen", jPanSettings);
+
         getContentPane().add(jTab, java.awt.BorderLayout.CENTER);
 
         jMenuFile.setText("Datei");
-
-        jmiSettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.META_MASK));
-        jmiSettings.setText("Einstellungen");
-        jmiSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiSettingsActionPerformed(evt);
-            }
-        });
-        jMenuFile.add(jmiSettings);
 
         jmiExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.META_MASK));
         jmiExit.setText("Beenden");
@@ -761,11 +765,6 @@ public class Woody extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jmiExportPresetsActionPerformed
 
-    private void jmiSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSettingsActionPerformed
-        final SettingsDialog dialog = new SettingsDialog(this, true);
-        dialog.setVisible(true);
-    }//GEN-LAST:event_jmiSettingsActionPerformed
-
     private void jmiExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jmiExitActionPerformed
@@ -792,6 +791,7 @@ public class Woody extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelUnit;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuPresets;
@@ -800,6 +800,7 @@ public class Woody extends javax.swing.JFrame {
     private javax.swing.JPanel jPanPresets;
     private javax.swing.JPanel jPanProdButt;
     private javax.swing.JPanel jPanProducts;
+    private javax.swing.JPanel jPanSettings;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JTabbedPane jTab;
@@ -811,6 +812,7 @@ public class Woody extends javax.swing.JFrame {
     private javax.swing.JButton jbutEditProduct;
     private javax.swing.JButton jbutRemovePreset;
     private javax.swing.JButton jbutRemoveProduct;
+    private javax.swing.JComboBox<String> jcbUnit;
     private javax.swing.JMenuItem jmiAddPreset;
     private javax.swing.JMenuItem jmiAddProduct;
     private javax.swing.JMenuItem jmiEditPreset;
@@ -824,7 +826,6 @@ public class Woody extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiRemoveProduct;
     private javax.swing.JMenuItem jmiSaveMore;
     private javax.swing.JMenuItem jmiSaveOne;
-    private javax.swing.JMenuItem jmiSettings;
     private javax.swing.JScrollPane jspPresets;
     private javax.swing.JScrollPane jspProducts;
     // End of variables declaration//GEN-END:variables

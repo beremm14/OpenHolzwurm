@@ -1,5 +1,7 @@
 package data.types;
 
+import data.Config;
+
 /**
  *
  * @author emil
@@ -33,7 +35,7 @@ public class TypeArea extends Type {
     }
 
     public double calcValue(double length, double width) {
-        return length * width;
+        return Config.getInstance().getUnit().getMeter(length) * Config.getInstance().getUnit().getMeter(width);
     }
 
     @Override

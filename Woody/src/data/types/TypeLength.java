@@ -1,5 +1,7 @@
 package data.types;
 
+import data.Config;
+
 /**
  *
  * @author emil
@@ -35,6 +37,10 @@ public class TypeLength extends Type {
     @Override
     public String toString() {
         return "Länge";
+    }
+    
+    public double calcValue(double length) {
+        return Config.getInstance().getUnit().getMeter(length);
     }
 
 }
