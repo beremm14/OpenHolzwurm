@@ -61,6 +61,50 @@ public class AddProductDialog extends javax.swing.JDialog {
         jtfName.setText(product.getName());
         jtfHours.setValue(product.getHours());
     }
+    
+    private void setPresetListValues() {
+        String text1 = null;
+        String text2 = null;
+        String text3 = null;
+        if (jListPresets.getSelectedValue() == null) {
+            return;
+        }
+        Preset preset = jListPresets.getSelectedValue();
+        currentType = preset.getType();
+        
+        if (currentType instanceof TypeArea) {
+            text1 = "Länge:";
+            text2 = "Breite:";
+            jLabelSecond.setVisible(true);
+            jtfSecond.setVisible(true);
+            jLabelThird.setVisible(false);
+            jtfThird.setVisible(false);
+        } else if (currentType instanceof TypeLength) {
+            text1 = "Länge:";
+            jLabelSecond.setVisible(false);
+            jtfSecond.setVisible(false);
+            jLabelThird.setVisible(false);
+            jtfThird.setVisible(false);
+        } else if (currentType instanceof TypePiece) {
+            text1 = "Anzahl:";
+            jLabelSecond.setVisible(false);
+            jtfSecond.setVisible(false);
+            jLabelThird.setVisible(false);
+            jtfThird.setVisible(false);
+        } else if (currentType instanceof TypeVolume) {
+            text1 = "Länge:";
+            text2 = "Breite:";
+            text3 = "Höhe";
+            jLabelSecond.setVisible(true);
+            jtfSecond.setVisible(true);
+            jLabelThird.setVisible(true);
+            jtfThird.setVisible(true);
+        }
+        
+        jLabelFirst.setText(text1);
+        jLabelSecond.setText(text2);
+        jLabelThird.setText(text3);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,6 +201,17 @@ public class AddProductDialog extends javax.swing.JDialog {
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 onMousePresetList(evt);
+            }
+        });
+        jListPresets.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                onKeyTypedPresetList(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                onKeyPressedPresetList(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                onKeyReleasedPresetList(evt);
             }
         });
         jScrollPane2.setViewportView(jListPresets);
@@ -334,52 +389,24 @@ public class AddProductDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jbutCancelActionPerformed
 
     private void onPresetList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPresetList
-        String text1 = null;
-        String text2 = null;
-        String text3 = null;
-        if (jListPresets.getSelectedValue() == null) {
-            return;
-        }
-        Preset preset = jListPresets.getSelectedValue();
-        currentType = preset.getType();
-        
-        if (currentType instanceof TypeArea) {
-            text1 = "Länge:";
-            text2 = "Breite:";
-            jLabelSecond.setVisible(true);
-            jtfSecond.setVisible(true);
-            jLabelThird.setVisible(false);
-            jtfThird.setVisible(false);
-        } else if (currentType instanceof TypeLength) {
-            text1 = "Länge:";
-            jLabelSecond.setVisible(false);
-            jtfSecond.setVisible(false);
-            jLabelThird.setVisible(false);
-            jtfThird.setVisible(false);
-        } else if (currentType instanceof TypePiece) {
-            text1 = "Anzahl:";
-            jLabelSecond.setVisible(false);
-            jtfSecond.setVisible(false);
-            jLabelThird.setVisible(false);
-            jtfThird.setVisible(false);
-        } else if (currentType instanceof TypeVolume) {
-            text1 = "Länge:";
-            text2 = "Breite:";
-            text3 = "Höhe";
-            jLabelSecond.setVisible(true);
-            jtfSecond.setVisible(true);
-            jLabelThird.setVisible(true);
-            jtfThird.setVisible(true);
-        }
-        
-        jLabelFirst.setText(text1);
-        jLabelSecond.setText(text2);
-        jLabelThird.setText(text3);
+        setPresetListValues();
     }//GEN-LAST:event_onPresetList
 
     private void onMousePresetList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMousePresetList
-        onPresetList(evt);
+        setPresetListValues();
     }//GEN-LAST:event_onMousePresetList
+
+    private void onKeyPressedPresetList(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onKeyPressedPresetList
+        setPresetListValues();
+    }//GEN-LAST:event_onKeyPressedPresetList
+
+    private void onKeyReleasedPresetList(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onKeyReleasedPresetList
+        setPresetListValues();
+    }//GEN-LAST:event_onKeyReleasedPresetList
+
+    private void onKeyTypedPresetList(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_onKeyTypedPresetList
+        setPresetListValues();
+    }//GEN-LAST:event_onKeyTypedPresetList
 
     /**
      * @param args the command line arguments

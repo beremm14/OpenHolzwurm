@@ -15,8 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import logging.Logger;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -25,12 +24,17 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import logging.LogBackgroundHandler;
+import logging.LogOutputStreamHandler;
 
 /**
  *
  * @author emil
  */
 public class Woody extends javax.swing.JFrame {
+    
+    private static final Logger LOG;
+    private static final Logger LOGP;
 
     private final OverviewModel overviewModel = new OverviewModel();
     private final PresetModel presetModel = new PresetModel();
@@ -55,6 +59,8 @@ public class Woody extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         refreshGui();
+        
+        LOG.info("Woody started...");
     }
 
     private void refreshGui() {
@@ -98,6 +104,7 @@ public class Woody extends javax.swing.JFrame {
     private void refreshProducts() throws IOException {
         saveProducts();
         loadProducts();
+        LOG.fine("Products refreshed...");
     }
     
     private void showErrMess(String message) {
@@ -139,6 +146,7 @@ public class Woody extends javax.swing.JFrame {
             Presets.getInstance().writeTo(w);
         } catch (IOException ex) {
             showErrMess("Fehler beim Speichern aufgetreten...");
+            LOG.severe(ex);
         }
 
     }
@@ -170,6 +178,7 @@ public class Woody extends javax.swing.JFrame {
             Presets.getInstance().loadInto(new FileInputStream(presetFile));
         } catch (IOException ex) {
             showErrMess("Fehler beim Laden aufgetreten...");
+            LOG.severe(ex);
         }
 
     }
@@ -201,6 +210,7 @@ public class Woody extends javax.swing.JFrame {
             Products.getInstance().writeTo(w);
         } catch (IOException ex) {
             showErrMess("Fehler beim Speichern aufgetreten...");
+            LOG.severe(ex);
         }
 
     }
@@ -232,6 +242,7 @@ public class Woody extends javax.swing.JFrame {
             Products.getInstance().loadInto(new FileInputStream(presetFile));
         } catch (IOException ex) {
             showErrMess("Fehler beim Laden aufgetreten...");
+            LOG.severe(ex);
         }
 
     }
@@ -263,6 +274,7 @@ public class Woody extends javax.swing.JFrame {
             Config.getInstance().writeTo(w);
         } catch (IOException ex) {
             showErrMess("Fehler beim Speichern aufgetreten...");
+            LOG.severe(ex);
         }
 
     }
@@ -294,6 +306,7 @@ public class Woody extends javax.swing.JFrame {
             Config.getInstance().loadInto(new FileInputStream(presetFile));
         } catch (IOException ex) {
             showErrMess("Fehler beim Laden aufgetreten...");
+            LOG.severe(ex);
         }
 
     }
@@ -304,12 +317,15 @@ public class Woody extends javax.swing.JFrame {
         
         if (dialog.isPressedOk()) {
             Products.getInstance().add(dialog.getProduct());
+            LOG.info("Product added");
         }
         
         refreshGui();
+        
         try {
             saveProducts();
         } catch (IOException ex) {
+            LOG.severe(ex);
         }
     }
 
@@ -323,21 +339,26 @@ public class Woody extends javax.swing.JFrame {
         
         if (dialog.isPressedOk()) {
             Products.getInstance().set(row, dialog.getProduct());
+            LOG.info("Product edited");
         }
         
         refreshGui();
+        
         try {
             saveProducts();
         } catch (IOException ex) {
+            LOG.severe(ex);
         }
     }
 
     private void removeProduct() {
         Products.getInstance().remove(jTableProducts.getSelectedRow());
         refreshGui();
+        LOG.info("Product removed");
         try {
             saveProducts();
         } catch (IOException ex) {
+            LOG.severe(ex);
         }
     }
     
@@ -347,12 +368,15 @@ public class Woody extends javax.swing.JFrame {
         
         if (dialog.isPressedOk() && dialog.getPreset() != null) {
             Presets.getInstance().add(dialog.getPreset());
+            LOG.info("Preset added");
         }
 
         refreshGui();
+        
         try {
             savePresets();
         } catch (IOException ex) {
+            LOG.severe(ex);
         }
     }
     
@@ -366,24 +390,30 @@ public class Woody extends javax.swing.JFrame {
         
         if (dialog.isPressedOk()) {
             Presets.getInstance().set(row, dialog.getPreset());
+            LOG.info("Preset edited");
             try {
                 refreshProducts();
             } catch (IOException ex) {
+                LOG.severe(ex);
             }
         }
         refreshGui();
+        
         try {
             savePresets();
         } catch (IOException ex) {
+            LOG.severe(ex);
         }
     }
     
     private void removePreset() {
         Presets.getInstance().remove(jTablePresets.getSelectedRow());
         refreshGui();
+        LOG.info("Preset removed");
         try {
             savePresets();
         } catch (IOException ex) {
+            LOG.severe(ex);
         }
     }
     
@@ -775,6 +805,7 @@ public class Woody extends javax.swing.JFrame {
         try (JsonReader jsonReader = Json.createReader(openFile())) {
             jsonObj = jsonReader.readObject();
         } catch (Exception ex) {
+            LOG.severe(ex);
         }
         Products.getInstance().add(new Product(jsonObj));
         refreshGui();
@@ -785,6 +816,7 @@ public class Woody extends javax.swing.JFrame {
             Products.getInstance().loadInto(openFile());
             refreshGui();
         } catch (Exception ex) {
+            LOG.severe(ex);
         }
     }//GEN-LAST:event_jmiOpenMoreActionPerformed
 
@@ -793,6 +825,7 @@ public class Woody extends javax.swing.JFrame {
         try {
             product.writeTo(saveFile());
         } catch (Exception ex) {
+            LOG.severe(ex);
         }
     }//GEN-LAST:event_jmiSaveOneActionPerformed
 
@@ -800,6 +833,7 @@ public class Woody extends javax.swing.JFrame {
         try {
             Products.getInstance().writeTo(saveFile());
         } catch (Exception ex) {
+            LOG.severe(ex);
         }
     }//GEN-LAST:event_jmiSaveMoreActionPerformed
 
@@ -832,6 +866,7 @@ public class Woody extends javax.swing.JFrame {
             Presets.getInstance().loadInto(openFile());
             refreshGui();
         } catch (Exception e) {
+            LOG.severe(e);
         }
     }//GEN-LAST:event_jmiLoadPresetsActionPerformed
 
@@ -840,6 +875,7 @@ public class Woody extends javax.swing.JFrame {
             Products.getInstance().writeTo(saveFile());
             refreshGui();
         } catch (Exception ex) {
+            LOG.severe(ex);
         }
     }//GEN-LAST:event_jmiExportPresetsActionPerformed
 
@@ -853,7 +889,9 @@ public class Woody extends javax.swing.JFrame {
             Config.getInstance().setWaste(((Number)jtfWaste.getValue()).intValue());
             overviewModel.fireTableDataChanged();
             saveConfig();
+            LOG.info("Config saved");
         } catch (Exception e) {
+            LOG.severe(e);
         }
     }//GEN-LAST:event_jbutOkActionPerformed
 
@@ -861,10 +899,11 @@ public class Woody extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        LOGP.addHandler(new LogBackgroundHandler(new LogOutputStreamHandler(System.out)));
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Woody.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.severe(ex);
         }
 
         if (System.getProperty("os.name").contains("Mac OS X")) {
@@ -876,6 +915,29 @@ public class Woody extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new Woody().setVisible(true);
         });
+    }
+    
+    static {
+        //System.setProperty("logging.Logger.printStackTrace", "");
+        System.setProperty("logging.LogOutputStreamHandler.showRecordHashcode", "false");
+        //System.setProperty("logging.Logger.printAll", "");
+        //System.setProperty("logging.LogRecordDataFormattedText.Terminal","NETBEANS");
+        System.setProperty("logging.LogRecordDataFormattedText.Terminal", "LINUX");
+        System.setProperty("logging.Logger.Level", "SEVERE");
+        System.setProperty("logging.Logger.Level", "WARNING");
+        System.setProperty("logging.Logger.Level", "INFO");
+        System.setProperty("logging.Logger.Level", "FINE");
+        System.setProperty("logging.Logger.Level", "FINER");
+        System.setProperty("logging.Logger.Level", "FINEST");
+        //System.setProperty("Test1.Logger.Level", "ALL");
+        System.setProperty("test.Test.Logger.Level", "FINER");
+        System.setProperty("test.*.Logger.Level", "FINE");
+        //System.setProperty("test.*.Logger.Handlers", "test.MyHandler");
+        //System.setProperty("test.*.Logger.Filter", "test.MyFilter");
+        //System.setProperty("logging.LogOutputStreamHandler.colorize", "false");
+
+        LOG = Logger.getLogger(Woody.class.getName());
+        LOGP = Logger.getParentLogger();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
