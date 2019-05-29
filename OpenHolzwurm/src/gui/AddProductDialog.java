@@ -415,7 +415,7 @@ public class AddProductDialog extends javax.swing.JDialog {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Woody.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OpenHolzwurm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         java.awt.EventQueue.invokeLater(() -> {

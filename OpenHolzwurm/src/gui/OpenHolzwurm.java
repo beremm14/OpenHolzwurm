@@ -31,7 +31,7 @@ import logging.LogOutputStreamHandler;
  *
  * @author emil
  */
-public class Woody extends javax.swing.JFrame {
+public class OpenHolzwurm extends javax.swing.JFrame {
     
     private static final Logger LOG;
     private static final Logger LOGP;
@@ -42,10 +42,10 @@ public class Woody extends javax.swing.JFrame {
     /**
      * Creates new form Woody
      */
-    public Woody() {
+    public OpenHolzwurm() {
         initComponents();
 
-        setTitle("Woody");
+        setTitle("OpenHolzwurm");
         setSize(new Dimension(1000, 750));
         setLocationRelativeTo(null);
 
@@ -822,16 +822,16 @@ public class Woody extends javax.swing.JFrame {
 
     private void jmiSaveOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveOneActionPerformed
         final Product product = Products.getInstance().get(jTableProducts.getSelectedRow());
-        try {
-            product.writeTo(saveFile());
+        try (BufferedWriter w = saveFile()) {
+            product.writeTo(w);
         } catch (Exception ex) {
             LOG.severe(ex);
         }
     }//GEN-LAST:event_jmiSaveOneActionPerformed
 
     private void jmiSaveMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiSaveMoreActionPerformed
-        try {
-            Products.getInstance().writeTo(saveFile());
+        try (BufferedWriter w = saveFile()) {
+            Products.getInstance().writeTo(w);
         } catch (Exception ex) {
             LOG.severe(ex);
         }
@@ -913,7 +913,7 @@ public class Woody extends javax.swing.JFrame {
         }
 
         java.awt.EventQueue.invokeLater(() -> {
-            new Woody().setVisible(true);
+            new OpenHolzwurm().setVisible(true);
         });
     }
     
@@ -936,7 +936,7 @@ public class Woody extends javax.swing.JFrame {
         //System.setProperty("test.*.Logger.Filter", "test.MyFilter");
         //System.setProperty("logging.LogOutputStreamHandler.colorize", "false");
 
-        LOG = Logger.getLogger(Woody.class.getName());
+        LOG = Logger.getLogger(OpenHolzwurm.class.getName());
         LOGP = Logger.getParentLogger();
     }
 
