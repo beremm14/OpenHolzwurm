@@ -25,6 +25,7 @@ public class AddProductDialog extends javax.swing.JDialog {
     private Product product = new Product();
     private ProductModel productModel = new ProductModel(product);
     private final PresetListModel presetListModel = new PresetListModel();
+    private data.types.Type currentType;
 
     /**
      * Creates new form AddProductDialog
@@ -39,7 +40,9 @@ public class AddProductDialog extends javax.swing.JDialog {
         jTableMaterials.setModel(productModel);
         jListPresets.setModel(presetListModel);
         
-        jLabelValue.setText("Wert:");
+        jLabelFirst.setText("Wert:");
+        jLabelSecond.setText("Wert:");
+        jLabelThird.setText("Wert:");
     }
 
     public boolean isPressedOk() {
@@ -77,12 +80,17 @@ public class AddProductDialog extends javax.swing.JDialog {
         jPanEast = new javax.swing.JPanel();
         jPanControls = new javax.swing.JPanel();
         jLabelPreset = new javax.swing.JLabel();
-        jtfValue = new javax.swing.JFormattedTextField();
-        jLabelValue = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListPresets = new javax.swing.JList<>();
         jbutAdd = new javax.swing.JButton();
         jbutRemove = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelFirst = new javax.swing.JLabel();
+        jLabelSecond = new javax.swing.JLabel();
+        jLabelThird = new javax.swing.JLabel();
+        jtfFirst = new javax.swing.JFormattedTextField();
+        jtfSecond = new javax.swing.JFormattedTextField();
+        jtfThird = new javax.swing.JFormattedTextField();
         jPanControls1 = new javax.swing.JPanel();
         jLabelName = new javax.swing.JLabel();
         jLabelHours = new javax.swing.JLabel();
@@ -109,7 +117,7 @@ public class AddProductDialog extends javax.swing.JDialog {
 
         jPanButtons.setBackground(new java.awt.Color(255, 255, 255));
         jPanButtons.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        jPanButtons.setLayout(new java.awt.GridLayout());
+        jPanButtons.setLayout(new java.awt.GridLayout(1, 0));
 
         jbutOK.setText("OK");
         jbutOK.addActionListener(new java.awt.event.ActionListener() {
@@ -143,24 +151,6 @@ public class AddProductDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         jPanControls.add(jLabelPreset, gridBagConstraints);
 
-        jtfValue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanControls.add(jtfValue, gridBagConstraints);
-
-        jLabelValue.setText("jLabel1");
-        jLabelValue.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanControls.add(jLabelValue, gridBagConstraints);
-
         jListPresets.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 onPresetList(evt);
@@ -187,7 +177,7 @@ public class AddProductDialog extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -201,11 +191,44 @@ public class AddProductDialog extends javax.swing.JDialog {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanControls.add(jbutRemove, gridBagConstraints);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new java.awt.GridLayout(2, 3));
+
+        jLabelFirst.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelFirst.setText("First");
+        jLabelFirst.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabelFirst);
+
+        jLabelSecond.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelSecond.setText("Second");
+        jLabelSecond.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabelSecond);
+
+        jLabelThird.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelThird.setText("Third");
+        jLabelThird.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabelThird);
+
+        jtfFirst.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        jPanel1.add(jtfFirst);
+
+        jtfSecond.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        jPanel1.add(jtfSecond);
+
+        jtfThird.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        jPanel1.add(jtfThird);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanControls.add(jPanel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -258,10 +281,26 @@ public class AddProductDialog extends javax.swing.JDialog {
     private void jbutAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutAddActionPerformed
         try {
             Preset preset = jListPresets.getSelectedValue();
-            double value = ((Number)jtfValue.getValue()).doubleValue();
+            
+            double first = 0;
+            double second = 0;
+            double third = 0;
+            
+            first = ((Number)jtfFirst.getValue()).doubleValue();
+            if (currentType instanceof TypeArea || currentType instanceof TypeVolume) {
+                second = ((Number)jtfSecond.getValue()).doubleValue();
+            }
+            if (currentType instanceof TypeVolume) {
+                third = ((Number)jtfThird.getValue()).doubleValue();
+            }
+            
+            double value = currentType.calcValue(new double[] {first, second, third});
+            
             product.add(new Material(preset, value));
             productModel.fireTableDataChanged();
-            jtfValue.setValue(null);
+            jtfFirst.setValue(null);
+            jtfSecond.setValue(null);
+            jtfThird.setValue(null);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Bitte alle Felder korrekt ausfüllen!", "Fehler!", JOptionPane.WARNING_MESSAGE);
         }
@@ -295,25 +334,47 @@ public class AddProductDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jbutCancelActionPerformed
 
     private void onPresetList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onPresetList
-        String text;
+        String text1 = null;
+        String text2 = null;
+        String text3 = null;
         if (jListPresets.getSelectedValue() == null) {
             return;
         }
         Preset preset = jListPresets.getSelectedValue();
+        currentType = preset.getType();
         
-        if (preset.getType() instanceof TypeArea) {
-            text = "Fläche:";
-        } else if (preset.getType() instanceof TypeLength) {
-            text = "Länge:";
-        } else if (preset.getType() instanceof TypePiece) {
-            text = "Anzahl:";
-        } else if (preset.getType() instanceof TypeVolume) {
-            text = "Volumen:";
-        } else {
-            text = "Wert:";
+        if (currentType instanceof TypeArea) {
+            text1 = "Länge:";
+            text2 = "Breite:";
+            jLabelSecond.setVisible(true);
+            jtfSecond.setVisible(true);
+            jLabelThird.setVisible(false);
+            jtfThird.setVisible(false);
+        } else if (currentType instanceof TypeLength) {
+            text1 = "Länge:";
+            jLabelSecond.setVisible(false);
+            jtfSecond.setVisible(false);
+            jLabelThird.setVisible(false);
+            jtfThird.setVisible(false);
+        } else if (currentType instanceof TypePiece) {
+            text1 = "Anzahl:";
+            jLabelSecond.setVisible(false);
+            jtfSecond.setVisible(false);
+            jLabelThird.setVisible(false);
+            jtfThird.setVisible(false);
+        } else if (currentType instanceof TypeVolume) {
+            text1 = "Länge:";
+            text2 = "Breite:";
+            text3 = "Höhe";
+            jLabelSecond.setVisible(true);
+            jtfSecond.setVisible(true);
+            jLabelThird.setVisible(true);
+            jtfThird.setVisible(true);
         }
         
-        jLabelValue.setText(text);
+        jLabelFirst.setText(text1);
+        jLabelSecond.setText(text2);
+        jLabelThird.setText(text3);
     }//GEN-LAST:event_onPresetList
 
     private void onMousePresetList(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_onMousePresetList
@@ -343,15 +404,18 @@ public class AddProductDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabelFirst;
     private javax.swing.JLabel jLabelHours;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelPreset;
-    private javax.swing.JLabel jLabelValue;
+    private javax.swing.JLabel jLabelSecond;
+    private javax.swing.JLabel jLabelThird;
     private javax.swing.JList<Preset> jListPresets;
     private javax.swing.JPanel jPanButtons;
     private javax.swing.JPanel jPanControls;
     private javax.swing.JPanel jPanControls1;
     private javax.swing.JPanel jPanEast;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableMaterials;
@@ -359,8 +423,10 @@ public class AddProductDialog extends javax.swing.JDialog {
     private javax.swing.JButton jbutCancel;
     private javax.swing.JButton jbutOK;
     private javax.swing.JButton jbutRemove;
+    private javax.swing.JFormattedTextField jtfFirst;
     private javax.swing.JFormattedTextField jtfHours;
     private javax.swing.JTextField jtfName;
-    private javax.swing.JFormattedTextField jtfValue;
+    private javax.swing.JFormattedTextField jtfSecond;
+    private javax.swing.JFormattedTextField jtfThird;
     // End of variables declaration//GEN-END:variables
 }

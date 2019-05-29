@@ -34,13 +34,14 @@ public class TypeArea extends Type {
         return "m²";
     }
 
-    public double calcValue(double length, double width) {
-        return Config.getInstance().getUnit().getMeter(length) * Config.getInstance().getUnit().getMeter(width);
-    }
-
     @Override
     public String toString() {
         return "Fläche";
+    }
+
+    @Override
+    public double calcValue(double[] values) {
+        return Config.getInstance().getUnit().getMeter(values[0]) * Config.getInstance().getUnit().getMeter(values[1]);
     }
 
 }

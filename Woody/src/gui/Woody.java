@@ -419,7 +419,6 @@ public class Woody extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jTab = new javax.swing.JTabbedPane();
         jPanProducts = new javax.swing.JPanel();
@@ -483,7 +482,7 @@ public class Woody extends javax.swing.JFrame {
         jPanProducts.add(jspProducts, java.awt.BorderLayout.CENTER);
 
         jPanProdButt.setBackground(new java.awt.Color(255, 255, 255));
-        jPanProdButt.setLayout(new java.awt.GridBagLayout());
+        jPanProdButt.setLayout(new java.awt.GridLayout());
 
         jbutAddProduct.setText("Hinzufügen");
         jbutAddProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -491,11 +490,7 @@ public class Woody extends javax.swing.JFrame {
                 jbutAddProductActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.5;
-        jPanProdButt.add(jbutAddProduct, gridBagConstraints);
+        jPanProdButt.add(jbutAddProduct);
 
         jbutEditProduct.setText("Bearbeiten");
         jbutEditProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -503,11 +498,7 @@ public class Woody extends javax.swing.JFrame {
                 jbutEditProductActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.5;
-        jPanProdButt.add(jbutEditProduct, gridBagConstraints);
+        jPanProdButt.add(jbutEditProduct);
 
         jbutRemoveProduct.setText("Entfernen");
         jbutRemoveProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -515,11 +506,7 @@ public class Woody extends javax.swing.JFrame {
                 jbutRemoveProductActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.5;
-        jPanProdButt.add(jbutRemoveProduct, gridBagConstraints);
+        jPanProdButt.add(jbutRemoveProduct);
 
         jPanProducts.add(jPanProdButt, java.awt.BorderLayout.SOUTH);
 
@@ -544,7 +531,7 @@ public class Woody extends javax.swing.JFrame {
         jPanPresets.add(jspPresets, java.awt.BorderLayout.CENTER);
 
         jPanPreButt.setBackground(new java.awt.Color(255, 255, 255));
-        jPanPreButt.setLayout(new java.awt.GridBagLayout());
+        jPanPreButt.setLayout(new java.awt.GridLayout());
 
         jbutAddPreset.setText("Hinzufügen");
         jbutAddPreset.addActionListener(new java.awt.event.ActionListener() {
@@ -552,11 +539,7 @@ public class Woody extends javax.swing.JFrame {
                 jbutAddPresetActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.5;
-        jPanPreButt.add(jbutAddPreset, gridBagConstraints);
+        jPanPreButt.add(jbutAddPreset);
 
         jbutEditPreset.setText("Bearbeiten");
         jbutEditPreset.addActionListener(new java.awt.event.ActionListener() {
@@ -564,11 +547,7 @@ public class Woody extends javax.swing.JFrame {
                 jbutEditPresetActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.5;
-        jPanPreButt.add(jbutEditPreset, gridBagConstraints);
+        jPanPreButt.add(jbutEditPreset);
 
         jbutRemovePreset.setText("Entfernen");
         jbutRemovePreset.addActionListener(new java.awt.event.ActionListener() {
@@ -576,11 +555,7 @@ public class Woody extends javax.swing.JFrame {
                 jbutRemovePresetActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.weighty = 0.5;
-        jPanPreButt.add(jbutRemovePreset, gridBagConstraints);
+        jPanPreButt.add(jbutRemovePreset);
 
         jPanPresets.add(jPanPreButt, java.awt.BorderLayout.SOUTH);
 

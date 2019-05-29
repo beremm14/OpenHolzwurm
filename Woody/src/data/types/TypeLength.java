@@ -38,9 +38,10 @@ public class TypeLength extends Type {
     public String toString() {
         return "Länge";
     }
-    
-    public double calcValue(double length) {
-        return Config.getInstance().getUnit().getMeter(length);
+
+    @Override
+    public double calcValue(double[] values) {
+        return Config.getInstance().getUnit().getMeter(values[0]);
     }
 
 }

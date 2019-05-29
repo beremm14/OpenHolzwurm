@@ -1,5 +1,6 @@
 package data;
 
+import data.types.Type;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,9 +23,15 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
     
     private String name;
     private double hours;
-    private final List<Material> materials = new ArrayList<>();
+    private List<Material> materials = new ArrayList<>();
 
     public Product() {}
+    
+    public Product(Product p) {
+        this.name = p.getName();
+        this.hours = (double) p.getHours();
+        this.materials = p.getMaterials();
+    }
     
     public Product(String name, double hours) {
         this.name = name;
@@ -46,6 +53,10 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
                 if (p.getName().equals(presetName)) {
                     preset = p;
                     break;
+                } else {
+                    Type type = Type.getType(presetObj.getString("Type"));
+                    double price = presetObj.getJsonNumber("Price").doubleValue();
+                    preset = new Preset(presetName, type, price);
                 }
             }
             

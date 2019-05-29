@@ -34,13 +34,14 @@ public class TypeVolume extends Type {
         return "m³";
     }
 
-    public double calcValue(double length, double width, double heigth) {
-        return Config.getInstance().getUnit().getMeter(length) * Config.getInstance().getUnit().getMeter(width) * Config.getInstance().getUnit().getMeter(heigth);
-    }
-
     @Override
     public String toString() {
         return "Volumen";
+    }
+
+    @Override
+    public double calcValue(double[] values) {
+        return Config.getInstance().getUnit().getMeter(values[0]) * Config.getInstance().getUnit().getMeter(values[1]) * Config.getInstance().getUnit().getMeter(values[2]);
     }
 
 }
