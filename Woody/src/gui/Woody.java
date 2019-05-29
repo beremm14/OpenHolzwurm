@@ -1,7 +1,6 @@
 package gui;
 
 import data.Config;
-import data.Material;
 import data.Preset;
 import data.Presets;
 import data.Product;
@@ -90,6 +89,7 @@ public class Woody extends javax.swing.JFrame {
         }
         
         jcbUnit.setSelectedItem(Config.getInstance().getUnit().toString());
+        jtfWaste.setValue(Config.getInstance().getWaste());
         
         presetModel.fireTableDataChanged();
         overviewModel.fireTableDataChanged();
@@ -419,6 +419,7 @@ public class Woody extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jTab = new javax.swing.JTabbedPane();
         jPanProducts = new javax.swing.JPanel();
@@ -438,6 +439,9 @@ public class Woody extends javax.swing.JFrame {
         jPanSettings = new javax.swing.JPanel();
         jLabelUnit = new javax.swing.JLabel();
         jcbUnit = new javax.swing.JComboBox<>();
+        jLabelWaste = new javax.swing.JLabel();
+        jtfWaste = new javax.swing.JFormattedTextField();
+        jbutOk = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jmiExit = new javax.swing.JMenuItem();
@@ -482,7 +486,7 @@ public class Woody extends javax.swing.JFrame {
         jPanProducts.add(jspProducts, java.awt.BorderLayout.CENTER);
 
         jPanProdButt.setBackground(new java.awt.Color(255, 255, 255));
-        jPanProdButt.setLayout(new java.awt.GridLayout());
+        jPanProdButt.setLayout(new java.awt.GridLayout(1, 0));
 
         jbutAddProduct.setText("Hinzufügen");
         jbutAddProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -531,7 +535,7 @@ public class Woody extends javax.swing.JFrame {
         jPanPresets.add(jspPresets, java.awt.BorderLayout.CENTER);
 
         jPanPreButt.setBackground(new java.awt.Color(255, 255, 255));
-        jPanPreButt.setLayout(new java.awt.GridLayout());
+        jPanPreButt.setLayout(new java.awt.GridLayout(1, 0));
 
         jbutAddPreset.setText("Hinzufügen");
         jbutAddPreset.addActionListener(new java.awt.event.ActionListener() {
@@ -564,16 +568,43 @@ public class Woody extends javax.swing.JFrame {
         jPanSettings.setBackground(new java.awt.Color(255, 255, 255));
         jPanSettings.setLayout(new java.awt.GridBagLayout());
 
-        jLabelUnit.setText("Einheit: ");
-        jPanSettings.add(jLabelUnit, new java.awt.GridBagConstraints());
+        jLabelUnit.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelUnit.setText("Einheit:");
+        jLabelUnit.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanSettings.add(jLabelUnit, gridBagConstraints);
 
         jcbUnit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Millimeter", "Zentimeter", "Meter", "Zoll" }));
-        jcbUnit.addActionListener(new java.awt.event.ActionListener() {
+        jPanSettings.add(jcbUnit, new java.awt.GridBagConstraints());
+
+        jLabelWaste.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelWaste.setText("Verschnitt (Prozent):");
+        jLabelWaste.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanSettings.add(jLabelWaste, gridBagConstraints);
+
+        jtfWaste.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanSettings.add(jtfWaste, gridBagConstraints);
+
+        jbutOk.setText("Übernehmen");
+        jbutOk.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcbUnitActionPerformed(evt);
+                jbutOkActionPerformed(evt);
             }
         });
-        jPanSettings.add(jcbUnit, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanSettings.add(jbutOk, gridBagConstraints);
 
         jTab.addTab("Einstellungen", jPanSettings);
 
@@ -816,15 +847,15 @@ public class Woody extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jmiExitActionPerformed
 
-    private void jcbUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbUnitActionPerformed
-        Unit unit = Unit.setUnit((String) jcbUnit.getSelectedItem());
-        System.out.println(unit.toString());
-        Config.getInstance().setUnit(unit);
+    private void jbutOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutOkActionPerformed
         try {
+            Config.getInstance().setUnit(Unit.setUnit((String)jcbUnit.getSelectedItem()));
+            Config.getInstance().setWaste(((Number)jtfWaste.getValue()).intValue());
+            overviewModel.fireTableDataChanged();
             saveConfig();
-        } catch (IOException ex) {
+        } catch (Exception e) {
         }
-    }//GEN-LAST:event_jcbUnitActionPerformed
+    }//GEN-LAST:event_jbutOkActionPerformed
 
     /**
      * @param args the command line arguments
@@ -849,6 +880,7 @@ public class Woody extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelUnit;
+    private javax.swing.JLabel jLabelWaste;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuPresets;
@@ -867,6 +899,7 @@ public class Woody extends javax.swing.JFrame {
     private javax.swing.JButton jbutAddProduct;
     private javax.swing.JButton jbutEditPreset;
     private javax.swing.JButton jbutEditProduct;
+    private javax.swing.JButton jbutOk;
     private javax.swing.JButton jbutRemovePreset;
     private javax.swing.JButton jbutRemoveProduct;
     private javax.swing.JComboBox<String> jcbUnit;
@@ -885,5 +918,6 @@ public class Woody extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiSaveOne;
     private javax.swing.JScrollPane jspPresets;
     private javax.swing.JScrollPane jspProducts;
+    private javax.swing.JFormattedTextField jtfWaste;
     // End of variables declaration//GEN-END:variables
 }

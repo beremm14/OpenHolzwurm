@@ -80,7 +80,7 @@ public class Product implements Comparable<Product>, JsonExport, JsonObjAble {
         for (Material m : materials) {
             price += m.getPrice();
         }
-        return price;
+        return price + (price * (Config.getInstance().getWaste())/100);
     }
     
     public int size() {
